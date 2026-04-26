@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BKR NEXUS SYS - Smart Station</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.1/dist/chartjs-adapter-moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.2.1"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ------------------------------------------------------------
+        1. CSS STYLING SECTION (ORIGINAL THEME)
+        ------------------------------------------------------------
+        */
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: rgba(20, 25, 35, 0.7);
+            --neon-blue: #00f3ff;
+            --neon-green: #00ff66;
+            --neon-red: #ff003c;
+            --neon-yellow: #ffdd00;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: #ffffff;
+            font-family: 'Prompt', sans-serif;
+            background-image: radial-gradient(circle at 50% 0%, #1a233a 0%, #0b0f19 70%);
+            min-height: 100vh;
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .ph-circle-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .ph-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 5px solid var(--neon-green);
+            box-shadow: 0 0 30px var(--neon-green), inset 0 0 20px var(--neon-green);
+            transition: all 0.5s ease;
+        }
+
+        .ph-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        .ph-label {
+            font-size: 1rem;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .water-card {
+            border-left: 5px solid var(--neon-green);
+            transition: 0.3s;
+        }
+
+        .btn-cyber {
+            background: transparent;
+            color: var(--neon-blue);
+            border: 1px solid var(--neon-blue);
+            font-family: 'Orbitron', sans-serif;
+            transition: 0.3s;
+        }
+
+        .btn-cyber:hover {
+            background: var(--neon-blue);
+            color: #000;
+            box-shadow: 0 0 20px var(--neon-blue);
+        }
+
+        .page-section {
+            display: none;
+            animation: fadeIn 0.4s;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-control, .form-control:focus {
+            background: rgba(0,0,0,0.5);
+            border: 1px solid #333;
+            color: #fff;
+        }
+
+        #three-container {
+            width: 100%;
+            height: 280px;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(0,243,255,0.3);
+            background: #020813;
+        }
+
+        .ai-alert {
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(0,243,255,0.05);
+            border-left: 4px solid var(--neon-blue);
+            min-height: 90px;
+        }
+
+        .digital-clock {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            color: var(--neon-blue);
+            text-shadow: 0 0 5px var(--neon-blue);
+            background: rgba(0, 243, 255, 0.05);
+            padding: 5px 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(0, 243, 255, 0.2);
+        }
+
+        .board-status {
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.3);
+        }
+
+        .status-online { color: var(--neon-green); text-shadow: 0 0 10px rgba(0,255,102,0.5); }
+        .status-sleep { color: #aaa; }
+    </style>
+</head>
+<body>
+
+<div class="container py-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 border-bottom border-secondary pb-3 gap-3">
+        <h2 style="font-family: 'Orbitron', sans-serif; text-shadow: 0 0 10px var(--neon-blue); margin: 0;">
+            <i class="fa-solid fa-fish-fins text-info"></i> BKR NEXUS POND
+        </h2>
+        <div class="d-flex align-items-center gap-2 flex-wrap">
+            <div id="realtime-clock" class="digital-clock">
+                <i class="fa-regular fa-clock"></i> 00:00:00
+            </div>
+            
+            <div id="mode-indicator" class="badge border border-success text-success" style="background: rgba(0,255,102,0.1); font-family: 'Orbitron', sans-serif; padding: 8px 12px; letter-spacing: 1px;">
+                <i class="fa-solid fa-wifi"></i> CLOUD MODE
+            </div>
+            <button class="btn btn-sm btn-cyber" onclick="connectBluetooth()" style="border-radius: 50%; width: 35px; height: 35px; padding: 0;" title="เชื่อมต่อ Bluetooth Gateway">
+                <i class="fa-brands fa-bluetooth-b"></i>
+            </button>
+        </div>
+    </div>
+
+    <div id="page-home" class="page-section active">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="glass-card text-center h-100">
+                    <h5 class="text-secondary"><i class="fa-solid fa-droplet"></i> REALTIME pH SENSOR</h5>
+                    <div class="ph-circle-container">
+                        <div class="ph-circle" id="ph-circle-ui">
+                            <div class="ph-value" id="ph-display">0.00</div>
+                            <div class="ph-label">pH Level</div>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card water-card mt-4 text-start" id="water-card-ui" style="background: rgba(0,255,102,0.05);">
+                        <div class="d-flex align-items-center">
+                            <i class="fa-solid fa-water fs-1 me-3" id="water-icon-ui" style="color: var(--neon-green);"></i>
+                            <div>
+                                <h6 class="mb-0 fw-bold" id="water-current-status" style="color: var(--neon-green);">สถานะน้ำ: ปกติ</h6>
+                                <small class="text-light d-block" id="water-dist-display">ระดับน้ำจากเซนเซอร์: -- cm</small>
+                                <small class="text-info d-block" id="temp-display">อุณหภูมิน้ำ: -- °C</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-7">
+                <div class="glass-card h-100">
+                    <div class="d-flex justify-content-between mb-3">
+                        <h5 class="text-secondary"><i class="fa-solid fa-chart-line"></i> REALTIME DATA</h5>
+                        <div>
+                            <span class="badge bg-danger me-2" id="today-max-ph">Max: --</span>
+                            <span class="badge bg-info" id="today-min-ph">Min: --</span>
+                        </div>
+                    </div>
+                    
+                    <div style="height: 200px;">
+                        <canvas id="todayChart"></canvas>
+                    </div>
+                    
+                    <div class="row mt-4">
+                        <div class="col-12 d-grid">
+                            <button class="btn btn-cyber" onclick="navTo('page-history')">
+                                <i class="fa-solid fa-database"></i> ประวัติค่าน้ำย้อนหลัง
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-2 g-3">
+            <div class="col-lg-6 col-md-12">
+                <div class="glass-card h-100 mb-0 d-flex flex-column">
+                    <h5 class="text-secondary mb-3"><i class="fa-solid fa-brain"></i> AI วิเคราะห์ระบบนิเวศบ่อปลา</h5>
+                    <div id="ai-alert-box" class="ai-alert mb-3 flex-grow-1">
+                        <h5 class="text-warning fw-bold mb-2" id="ai-title"><i class="fa-solid fa-spinner fa-spin"></i> กำลังวิเคราะห์น้ำ...</h5>
+                        <p class="text-light mb-0" id="ai-desc" style="font-size: 1.1rem; line-height: 1.5;">รอข้อมูลจากเซนเซอร์...</p>
+                    </div>
+                    <div class="board-status">
+                        <h6 class="text-secondary mb-2">สถานะการเชื่อมต่อเซนเซอร์ (Board Status)</h6>
+                        <h4 id="board-status-text" class="mb-0 status-sleep">
+                            <i class="fa-solid fa-moon"></i> SLEEP / OFFLINE
+                        </h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-12">
+                <div class="glass-card h-100 mb-0 p-2">
+                    <div class="d-flex justify-content-between align-items-center mb-2 px-2">
+                        <h6 class="text-secondary mb-0"><i class="fa-solid fa-fish"></i> 3D จำลองพฤติกรรมปลา</h6>
+                    </div>
+                    <div id="three-container"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card manual-banner mt-4 text-start p-3" data-bs-toggle="modal" data-bs-target="#manualModal">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <h5 class="mb-1 fw-bold text-white"><i class="fa-solid fa-book-open text-info me-2"></i> คู่มือการใช้งานระบบ (User Manual)</h5>
+                    <small class="text-info">ฟังก์ชันครอบคลุม และข้อควรระวังของระบบ</small>
+                </div>
+                <i class="fa-solid fa-chevron-right fs-4 text-info"></i>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-history" class="page-section">
+        <button class="btn btn-outline-secondary mb-3" onclick="navTo('page-home')"><i class="fa-solid fa-arrow-left"></i> กลับหน้าหลัก</button>
+        <div class="glass-card">
+            <h5 class="text-secondary mb-3"><i class="fa-regular fa-calendar-days"></i> ดูสรุปข้อมูลและกราฟรายวัน</h5>
+            <div class="input-group mb-4" style="max-width: 300px;">
+                <input type="date" id="history-date" class="form-control">
+                <button class="btn btn-outline-info" onclick="loadSpecificHistory()">ดึงข้อมูล</button>
+            </div>
+            <div class="row text-center mb-4" id="history-summary-box" style="display: none;">
+                <div class="col-md-6 mb-2">
+                    <div class="p-3 border rounded h-100" style="background: rgba(0, 243, 255, 0.05); border-color: var(--neon-blue) !important;">
+                        <h6 class="text-info"><i class="fa-solid fa-arrow-up"></i> Max pH สูงสุด</h6>
+                        <h2 id="hist-max-ph" class="text-white mb-0">--</h2>
+                        <small class="text-muted">เวลา: <span id="hist-max-time" class="text-info">--:--</span> น.</small>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="p-3 border rounded h-100" style="background: rgba(255, 0, 60, 0.05); border-color: var(--neon-red) !important;">
+                        <h6 class="text-danger"><i class="fa-solid fa-arrow-down"></i> Min pH ต่ำสุด</h6>
+                        <h2 id="hist-min-ph" class="text-white mb-0">--</h2>
+                        <small class="text-muted">เวลา: <span id="hist-min-time" class="text-danger">--:--</span> น.</small>
+                    </div>
+                </div>
+            </div>
+            <div id="history-empty-msg" class="text-center text-muted py-4">
+                <i class="fa-solid fa-folder-open fs-1 mb-2 opacity-50"></i><br>เลือกวันที่เพื่อดูข้อมูล
+            </div>
+            <div id="history-chart-container" style="height: 350px; display: none;">
+                <canvas id="historyChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="manualModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content glass-theme border-info" style="background-color: #000000 !important; border: 2px solid var(--neon-blue) !important; box-shadow: 0 0 40px rgba(0, 243, 255, 0.2) !important;">
+            
+            <div class="modal-header border-secondary p-4" style="background-color: #000000; border-bottom: 1px solid rgba(0, 243, 255, 0.3) !important;">
+                <h4 class="modal-title fw-bold" style="color: var(--neon-blue); font-family: 'Orbitron', sans-serif; letter-spacing: 2px;">
+                    <i class="fa-solid fa-book-medical me-3"></i> BKR NEXUS POND - OPERATIONAL MANUAL
+                </h4>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body p-4 p-md-5" style="background-color: #000000; color: #e0e0e0;">
+                <div class="row g-5">
+                    
+                    <div class="col-md-6 book-page-left" style="border-right: 1px dashed rgba(0, 243, 255, 0.2);">
+                        <h5 class="manual-topic" style="color: var(--neon-blue); border-bottom: 1px solid var(--neon-blue); padding-bottom: 10px; margin-bottom: 20px; font-weight: 600;">
+                            <i class="fa-solid fa-microchip me-2"></i> 1. สถาปัตยกรรมและการควบคุมระบบ
+                        </h5>
+                        <ul class="manual-list" style="list-style-type: none; padding-left: 0;">
+                            <li class="mb-3">
+                                <strong class="text-white"><i class="fa-solid fa-circle-dot me-2 text-info" style="font-size: 8px;"></i> ระบบ Cloud Real-time:</strong> 
+                                ข้อมูลถูกส่งจากบอร์ด ESP8266 ผ่านโปรโตคอล HTTPS ไปยัง Firebase Database โดยมีความหน่วง (Latency) ต่ำกว่า 500ms ทำให้การแสดงผลบน Dashboard เกือบจะเป็นปัจจุบันที่สุด
+                            </li>
+                            <li class="mb-3">
+                                <strong class="text-white"><i class="fa-solid fa-circle-dot me-2 text-info" style="font-size: 8px;"></i> การแสดงผลกราฟวิเคราะห์:</strong> 
+                                กราฟเส้นสีฟ้า (Cyan Neon) ถูกออกแบบมาเพื่อวิเคราะห์แนวโน้ม (Trend Analysis) คุณสามารถซูมดูช่วงเวลาที่ค่า pH มีการแกว่งตัวผิดปกติเพื่อหาสาเหตุของมลพิษในน้ำได้
+                            </li>
+                            <li class="mb-3">
+                                <strong class="text-white"><i class="fa-solid fa-circle-dot me-2 text-info" style="font-size: 8px;"></i> ระบบจำลองปลา 3D Twin:</strong> 
+                                เป็นนวัตกรรมการแจ้งเตือนรูปแบบใหม่ โดย AI จะประมวลผลค่า pH และอุณหภูมิ แล้วสั่งการให้โมเดลปลาแสดงท่าทาง "ปกติ" หรือ "หงายท้อง" เพื่อให้ผู้ดูแลรับรู้ถึงวิกฤตได้ทันทีโดยไม่ต้องอ่านตัวเลข
+                            </li>
+                        </ul>
+
+                        <h5 class="manual-topic mt-5" style="color: var(--neon-green); border-bottom: 1px solid var(--neon-green); padding-bottom: 10px; margin-bottom: 20px; font-weight: 600;">
+                            <i class="fa-solid fa-brain me-2"></i> 2. เกณฑ์การวิเคราะห์โดย Nexus AI
+                        </h5>
+                        <table class="table table-dark table-borderless small" style="background-color: transparent;">
+                            <thead>
+                                <tr class="text-secondary border-bottom border-secondary">
+                                    <th>พารามิเตอร์</th>
+                                    <th>สถานะปกติ</th>
+                                    <th>สถานะวิกฤต</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-info">ค่า pH (น้ำ)</td>
+                                    <td>6.5 - 8.0 pH</td>
+                                    <td class="text-danger">> 8.5 หรือ < 5.5</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-info">อุณหภูมิ (°C)</td>
+                                    <td>25 - 31 °C</td>
+                                    <td class="text-danger">> 35 °C (ปลาน็อก)</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-info">ระดับน้ำ (Dist)</td>
+                                    <td>ระยะติดตั้ง < 40cm</td>
+                                    <td class="text-danger">> 50cm (น้ำแห้ง)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h5 class="manual-topic" style="color: var(--neon-yellow); border-bottom: 1px solid var(--neon-yellow); padding-bottom: 10px; margin-bottom: 20px; font-weight: 600;">
+                            <i class="fa-solid fa-tools me-2"></i> 3. การบำรุงรักษาฮาร์ดแวร์เซ็นเซอร์
+                        </h5>
+                        <ul class="manual-list" style="list-style-type: none; padding-left: 0;">
+                            <li class="mb-4">
+                                <div class="badge bg-warning text-dark mb-2">pH Probe E-201-C</div><br>
+                                <small class="text-secondary">หัววัด pH มีอายุการใช้งานและมีความไวสูง **ห้ามปล่อยให้หัวแก้วแห้งเด็ดขาด** ควรมีน้ำแช่อยู่ในฝาครอบเสมอ (น้ำยา KCL) หากค่าเพี้ยนให้ทำการ Calibrate ด้วยสารละลาย Buffer pH 4.0 และ 6.86</small>
+                            </li>
+                            <li class="mb-4">
+                                <div class="badge bg-info text-dark mb-2">Ultrasonic JSN-SR04T</div><br>
+                                <small class="text-secondary">เป็นเซ็นเซอร์วัดระยะทางแบบกันน้ำ (Waterproof) ควรติดตั้งให้ขนานกับผิวน้ำ และเช็ดคราบตะไคร่หรือหยดน้ำที่เกาะอยู่หน้าโพรบออกทุกเดือนเพื่อความแม่นยำ</small>
+                            </li>
+                            <li class="mb-4">
+                                <div class="badge bg-success text-dark mb-2">DS18B20 Temperature</div><br>
+                                <small class="text-secondary">เซ็นเซอร์ดิจิทัลที่ส่งข้อมูลแบบ One-Wire ควรตรวจสอบจุดต่อสายไฟ (Resistor 4.7k) ว่าไม่มีสนิมเขียวเกาะ เพื่อป้องกันสัญญาณรบกวน</small>
+                            </li>
+                        </ul>
+
+                        <div class="p-3 rounded border border-danger mt-4" style="background-color: rgba(255, 0, 60, 0.05);">
+                            <h6 class="text-danger fw-bold"><i class="fa-solid fa-triangle-exclamation me-2"></i> ข้อควรระวังขั้นสูง</h6>
+                            <p class="small mb-0 text-muted">
+                                การวางสายสัญญาณของหัววัด pH ใกล้กับสายปั๊มน้ำแรงดันสูง (AC Pump) อาจทำให้เกิดสัญญาณรบกวน (Noise) อย่างรุนแรง ทำให้ค่า pH กระโดดไปมา แนะนำให้ใช้สายชีลด์ (Shielded Cable) หรือวางห่างจากแหล่งกำเนิดสัญญาณรบกวนอย่างน้อย 1 ฟุต
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer border-secondary justify-content-center p-4" style="background-color: #000000; border-top: 1px solid rgba(0, 243, 255, 0.3) !important;">
+                <button type="button" class="btn btn-cyber px-5 rounded-pill" data-bs-dismiss="modal">
+                    <i class="fa-solid fa-shield-halved me-2"></i> เข้าใจและยืนยันการใช้งาน
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // System Clock Management
+    function updateClock() {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('th-TH', { hour12: false });
+        const clockEl = document.getElementById('realtime-clock');
+        if(clockEl) clockEl.innerHTML = `<i class="fa-regular fa-clock"></i> ${timeStr}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Application Navigation Management
+    function navTo(pageId) {
+        document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        window.scrollTo(0, 0);
+
+        if (pageId === 'page-history' && typeof window.loadSpecificHistory === 'function') {
+            window.loadSpecificHistory();
+        }
+    }
+</script>
+
+<script type="module">
+    /* ========================================================================================================
+    * FIREBASE INITIALIZATION & DATA STREAMING LOGIC
+    ========================================================================================================
+    */
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+    import { getDatabase, ref, onValue, get } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBDq_9EK3HAcgeecJEbpR5HVqzkuWhfmDk",
+        databaseURL: "https://flutter-ai-playground-84f49-default-rtdb.firebaseio.com",
+        projectId: "flutter-ai-playground-84f49"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Global Sensor State Variables
+    let historyChartInstance = null; 
+    let currentPh = 7.0;
+    let currentDist = 0;
+    let currentTemp = 0;
+    
+    // Connectivity Monitoring Flags
+    let isBoardOnline = false;
+    let lastBoardActivityTime = Date.now() - 600000;
+    let isFirstPhLoad = true;
+    let isFirstDistLoad = true;
+    let isWaterBad = false;
+
+    /* ========================================================================================================
+    * THREE.JS: ADVANCED 3D RENDERING ENGINE
+    ========================================================================================================
+    */
+    let scene, camera, renderer, fishGroup, tailGroup;
+
+    function initThreeJS() {
+        const container = document.getElementById('three-container');
+        if(!container) return;
+
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x020813); // Deep Water Blue
+        scene.fog = new THREE.FogExp2(0x020813, 0.15); // Underwater fog effect
+
+        camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+        camera.position.set(0, 0, 5); 
+
+        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container.appendChild(renderer.domElement);
+
+        // Scene Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6); 
+        scene.add(ambientLight);
+        
+        const directionalLight = new THREE.DirectionalLight(0x00aaff, 1); 
+        directionalLight.position.set(0, 10, 5); 
+        scene.add(directionalLight);
+
+        // Procedural Fish Object Construction
+        fishGroup = new THREE.Group();
+
+        // Fish Body: Ellipsoid deformation
+        const bodyGeo = new THREE.SphereGeometry(0.6, 32, 16);
+        const bodyMat = new THREE.MeshStandardMaterial({ color: 0xff6600, roughness: 0.4 });
+        const body = new THREE.Mesh(bodyGeo, bodyMat);
+        body.scale.set(1.2, 0.7, 0.3);
+        fishGroup.add(body);
+
+        // Fish Eyes
+        const eyeGeo = new THREE.SphereGeometry(0.08, 16, 16);
+        const eyeMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
+        const eyeR = new THREE.Mesh(eyeGeo, eyeMat); eyeR.position.set(0.4, 0.1, 0.2);
+        const eyeL = new THREE.Mesh(eyeGeo, eyeMat); eyeL.position.set(0.4, 0.1, -0.2);
+        fishGroup.add(eyeR, eyeL);
+
+        // Tail Construction with Animation Group
+        tailGroup = new THREE.Group();
+        tailGroup.position.set(-0.7, 0, 0); 
+        const tailGeo = new THREE.ConeGeometry(0.3, 0.6, 3);
+        const tailMat = new THREE.MeshStandardMaterial({ color: 0xff4400, roughness: 0.5 });
+        const tail = new THREE.Mesh(tailGeo, tailMat);
+        tail.rotation.z = -Math.PI / 2; tail.rotation.x = Math.PI / 2; tail.scale.set(1, 1, 0.2);
+        tailGroup.add(tail);
+        fishGroup.add(tailGroup);
+
+        scene.add(fishGroup);
+
+        // Background Particles (Bubbles)
+        const bubbles = [];
+        const bubbleGeo = new THREE.SphereGeometry(0.05, 8, 8);
+        const bubbleMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.4 });
+        for(let i=0; i<15; i++) {
+            const b = new THREE.Mesh(bubbleGeo, bubbleMat);
+            b.position.set((Math.random()-0.5)*4, (Math.random()-0.5)*4, (Math.random()-0.5)*2);
+            b.userData.speed = Math.random() * 0.02 + 0.01;
+            scene.add(b); bubbles.push(b);
+        }
+
+        // Animation Loop Control
+        function animate() {
+            requestAnimationFrame(animate); 
+            const time = Date.now() * 0.001;
+
+            if (isWaterBad) {
+                // Crisis State: Fish floating and struggling
+                fishGroup.rotation.x = THREE.MathUtils.lerp(fishGroup.rotation.x, Math.PI, 0.05);
+                fishGroup.rotation.z = Math.sin(time * 8) * 0.2;
+                tailGroup.rotation.y = Math.sin(time * 15) * 0.5;
+                fishGroup.position.y = THREE.MathUtils.lerp(fishGroup.position.y, 1.0, 0.02);
+            } else {
+                // Stable State: Calm swimming
+                fishGroup.rotation.x = THREE.MathUtils.lerp(fishGroup.rotation.x, 0, 0.05);
+                fishGroup.rotation.z = Math.sin(time * 1.5) * 0.1;
+                tailGroup.rotation.y = Math.sin(time * 5) * 0.3;
+                fishGroup.position.y = Math.sin(time * 2) * 0.2;
+            }
+
+            bubbles.forEach(b => {
+                b.position.y += b.userData.speed;
+                if (b.position.y > 2) b.position.y = -2;
+            });
+
+            renderer.render(scene, camera);
+        }
+        animate();
+    }
+
+    /* ========================================================================================================
+    * AI ENGINE: SENSORY ANALYSIS AND DECISION MAKING
+    ========================================================================================================
+    */
+    function checkBoardStatus() {
+        const now = Date.now();
+        const statusEl = document.getElementById('board-status-text');
+        if (now - lastBoardActivityTime > 180000) {
+            isBoardOnline = false;
+            statusEl.className = "mb-0 status-sleep";
+            statusEl.innerHTML = `<i class="fa-solid fa-moon"></i> SLEEP / OFFLINE`;
+        } else {
+            isBoardOnline = true;
+            statusEl.className = "mb-0 status-online fw-bold";
+            statusEl.innerHTML = `<i class="fa-solid fa-signal"></i> ONLINE (ทำงานปกติ)`;
+        }
+    }
+
+    window.runFishPondLogic = function() {
+        checkBoardStatus();
+        let aiTitle = document.getElementById('ai-title');
+        let aiDesc = document.getElementById('ai-desc');
+        let statusHex = '#00ff66'; 
+
+        if (currentPh < 6.5) {
+            statusHex = '#ffdd00'; isWaterBad = false;
+            aiTitle.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> 🟡 แจ้งเตือน: น้ำเริ่มเป็นกรด`;
+            aiDesc.innerText = `ปลาอาจเกิดความเครียด หรือระคายเคืองเมือก ควรตรวจสอบระบบกรองน้ำ`;
+            aiTitle.className = "text-warning fw-bold mb-2";
+        } else if (currentPh > 8.0) {
+            statusHex = '#ff003c'; isWaterBad = true;
+            aiTitle.innerHTML = `<i class="fa-solid fa-skull-crossbones"></i> 🔴 วิกฤต! น้ำเน่าเสีย`;
+            aiDesc.innerHTML = `<strong>ปลาต้องการความช่วยเหลือด่วน!</strong> ค่า pH สูงเกินไป แอมโมเนียเป็นพิษ`;
+            aiTitle.className = "text-danger fw-bold mb-2";
+        } else {
+            statusHex = '#00ff66'; isWaterBad = false;
+            aiTitle.innerHTML = `<i class="fa-solid fa-check-circle"></i> <span style="color: var(--neon-green);">ระบบนิเวศปกติ</span>`;
+            aiDesc.innerText = `คุณภาพน้ำเหมาะสม ปลาดำรงชีวิตได้อย่างมีความสุข`;
+            aiTitle.className = "fw-bold mb-2";
+        }
+
+        const circle = document.getElementById('ph-circle-ui');
+        if(circle) {
+            circle.style.borderColor = statusHex;
+            circle.style.boxShadow = `0 0 30px ${statusHex}, inset 0 0 20px ${statusHex}`;
+        }
+    };
+
+    /* ========================================================================================================
+    * CHARTING ENGINE: DATA VISUALIZATION ARCHITECTURE (RESTORED ORIGINAL STYLE)
+    ========================================================================================================
+    */
+    const todayStr = new Date().toISOString().split('T')[0];
+    const ctx = document.getElementById('todayChart').getContext('2d');
+    
+    const todayChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            datasets: [{
+                label: 'pH Level Index',
+                data: [],
+                borderColor: '#00f3ff', // Original Cyan Neon
+                backgroundColor: 'rgba(0, 243, 255, 0.1)',
+                borderWidth: 2, 
+                fill: true, 
+                tension: 0.2, // Low tension for sharp but clean original feel
+                pointRadius: 1, 
+                pointHoverRadius: 6, 
+                spanGaps: true
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            scales: {
+                x: {
+                    type: 'time', 
+                    time: { unit: 'minute', displayFormats: { minute: 'HH:mm', hour: 'HH:mm' } },
+                    min: todayStr + 'T00:00:00', max: todayStr + 'T23:59:59',
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' }, ticks: { color: '#aaa' }
+                },
+                y: { min: 0, max: 14, grid: { color: 'rgba(255, 255, 255, 0.1)' }, ticks: { color: '#aaa' } }
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: { 
+                    mode: 'index', intersect: false, backgroundColor: 'rgba(0,0,0,0.8)', titleColor: '#00f3ff',
+                    callbacks: {
+                        title: (t) => new Date(t[0].parsed.x).toLocaleTimeString('th-TH'),
+                        label: (c) => ` pH: ${c.parsed.y.toFixed(2)}`
+                    }
+                },
+                zoom: { pan: { enabled: true, mode: 'x' }, zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'x' } }
+            }
+        }
+    });
+
+    /* ========================================================================================================
+    * DATA SYNC: REAL-TIME DATA ACQUISITION FROM FIREBASE
+    ========================================================================================================
+    */
+
+    // pH Sensing Stream
+    onValue(ref(db, 'sensor/ph'), (snap) => {
+        const val = snap.val() || 0;
+        currentPh = val; 
+        if (!isFirstPhLoad) lastBoardActivityTime = Date.now();
+        isFirstPhLoad = false;
+        
+        document.getElementById('ph-display').innerText = val.toFixed(2);
+        todayChart.data.datasets[0].data.push({ x: Date.now(), y: val });
+        todayChart.update('quiet');
+        window.runFishPondLogic();
+    });
+
+    // Distance (Water Level) Sensing Stream
+    onValue(ref(db, 'sensor/distance'), (snap) => {
+        const dist = snap.val() || 0;
+        currentDist = dist; 
+        if (!isFirstDistLoad) lastBoardActivityTime = Date.now();
+        isFirstDistLoad = false;
+        
+        document.getElementById('water-dist-display').innerText = `ระดับน้ำจากเซนเซอร์: ${dist.toFixed(1)} cm`;
+        window.runFishPondLogic();
+    });
+
+    // Temperature Sensing Stream
+    onValue(ref(db, 'sensor/temperature'), (snap) => {
+        currentTemp = snap.val() || 0;
+        const tDisp = document.getElementById('temp-display');
+        if(tDisp) tDisp.innerText = `อุณหภูมิน้ำ: ${currentTemp.toFixed(1)} °C`;
+        window.runFishPondLogic();
+    });
+
+    /* ========================================================================================================
+    * HISTORICAL DATABASE: DATA RETRIEVAL ENGINE
+    ========================================================================================================
+    */
+    window.loadSpecificHistory = function() {
+        const date = document.getElementById('history-date').value;
+        const summaryBox = document.getElementById('history-summary-box');
+        const emptyMsg = document.getElementById('history-empty-msg');
+        const chartContainer = document.getElementById('history-chart-container');
+        
+        if(!date) return;
+
+        get(ref(db, 'history/' + date)).then((snapshot) => {
+            if(snapshot.exists()) {
+                const data = snapshot.val();
+                let points = [], maxP = -1, minP = 15, maxT = "--:--", minT = "--:--";
+
+                for(let timeKey in data) {
+                    let ph = data[timeKey].ph !== undefined ? data[timeKey].ph : data[timeKey];
+                    points.push({ x: new Date(date + 'T' + timeKey).getTime(), y: ph });
+                    if(ph > maxP) { maxP = ph; maxT = timeKey; }
+                    if(ph < minP) { minP = ph; minT = timeKey; }
+                }
+                
+                document.getElementById('hist-max-ph').innerText = maxP.toFixed(2);
+                document.getElementById('hist-max-time').innerText = maxT;
+                document.getElementById('hist-min-ph').innerText = minP.toFixed(2);
+                document.getElementById('hist-min-time').innerText = minT;
+
+                emptyMsg.style.display = 'none'; summaryBox.style.display = 'flex'; chartContainer.style.display = 'block';
+
+                if(historyChartInstance) historyChartInstance.destroy();
+                const ctxH = document.getElementById('historyChart').getContext('2d');
+                historyChartInstance = new Chart(ctxH, {
+                    type: 'line',
+                    data: {
+                        datasets: [{
+                            label: 'History pH',
+                            data: points.sort((a,b) => a.x - b.x),
+                            borderColor: '#ff003c', backgroundColor: 'rgba(255, 0, 60, 0.1)',
+                            borderWidth: 2, fill: true, tension: 0.1
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, scales: { x: { type: 'time' } } }
+                });
+            } else {
+                emptyMsg.style.display = 'block'; summaryBox.style.display = 'none'; chartContainer.style.display = 'none';
+            }
+        });
+    };
+
+    // System Startup Sequence
+    setTimeout(() => {
+        initThreeJS();
+        setInterval(window.runFishPondLogic, 1000); 
+        console.log("BKR Nexus System Initialized...");
+    }, 1000);
+</script>
+
+</body>
+</html>
