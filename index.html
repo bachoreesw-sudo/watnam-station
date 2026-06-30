@@ -37,7 +37,7 @@
         /* Light Mode: Blue/Navy/White Tone */
         body.light-mode {
             --bg-color: #e3f2fd;
-            --card-bg: rgba(255, 255, 255, 0.9);
+            --card-bg: rgba(255, 255, 255, 0.95);
             --text-color: #0d47a1;
         }
 
@@ -47,14 +47,14 @@
             font-family: 'Prompt', sans-serif;
             min-height: 100vh;
             transition: background-color 0.5s, color 0.5s;
-            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2070&auto=format&fit=crop'); /* Hardcoded Ocean/Boat Theme */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2070&auto=format&fit=crop');
             background-size: cover;
             background-attachment: fixed;
             background-position: center;
         }
         
         body.light-mode {
-            background-image: linear-gradient(rgba(255, 255, 255, 0.7), rgba(227, 242, 253, 0.8)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2070&auto=format&fit=crop');
+            background-image: linear-gradient(rgba(255, 255, 255, 0.8), rgba(227, 242, 253, 0.9)), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2070&auto=format&fit=crop');
         }
 
         .glass-card {
@@ -67,6 +67,46 @@
             margin-bottom: 20px;
         }
 
+        body.light-mode .glass-card {
+            border: 1px solid rgba(13, 71, 161, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(13, 71, 161, 0.1);
+        }
+
+        body.light-mode .text-secondary {
+            color: #1565c0 !important;
+        }
+        body.light-mode .text-muted {
+            color: #546e7a !important;
+        }
+        body.light-mode .text-light {
+            color: #37474f !important;
+        }
+        body.light-mode .ai-alert {
+            background: rgba(13, 71, 161, 0.05);
+        }
+        body.light-mode .board-status {
+            background: rgba(13, 71, 161, 0.05);
+            border: 1px solid rgba(13, 71, 161, 0.2);
+        }
+        body.light-mode #three-container {
+            border: 1px solid rgba(13, 71, 161, 0.3);
+            background: #e3f2fd;
+        }
+        body.light-mode .form-control {
+            background: rgba(255, 255, 255, 0.9);
+            color: #0d47a1;
+            border-color: #90caf9;
+        }
+        body.light-mode .btn-cyber {
+            color: #0d47a1;
+            border-color: #0d47a1;
+        }
+        body.light-mode .btn-cyber:hover {
+            background: #0d47a1;
+            color: #fff;
+            box-shadow: 0 0 10px rgba(13, 71, 161, 0.5);
+        }
+
         /* Combined Gauges */
         .gauge-wrapper {
             position: relative; width: 100%; max-width: 350px; margin: 0 auto;
@@ -74,7 +114,7 @@
         }
         .gauge-svg { position: absolute; bottom: 0; width: 100%; overflow: visible; }
         .gauge-center-info {
-            position: absolute; bottom: 10px; left: 0; right: 0; text-align: center; z-index: 2;
+            position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; z-index: 2;
         }
         .ec-main-val {
             font-family: 'Orbitron', sans-serif; font-size: 3.5rem; font-weight: 700;
@@ -84,7 +124,7 @@
         .ec-main-label { font-size: 1rem; color: var(--neon-blue); letter-spacing: 2px; }
         
         .sub-gauges-info {
-            display: flex; justify-content: center; gap: 20px; margin-top: 15px;
+            display: flex; justify-content: center; gap: 20px; margin-top: 25px;
         }
         .sub-info-box { text-align: center; }
         .sub-info-box i { font-size: 1.2rem; }
@@ -103,11 +143,13 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
         .form-control, .form-control:focus { background: rgba(0,0,0,0.5); border: 1px solid #333; color: #fff; }
-        body.light-mode .form-control { background: rgba(255,255,255,0.8); color: #000; border-color: #aaa; }
 
         #three-container { width: 100%; height: 280px; border-radius: 15px; overflow: hidden; position: relative; border: 1px solid rgba(0,243,255,0.3); background: #020813; }
         .ai-alert { padding: 15px; border-radius: 10px; background: rgba(0,243,255,0.05); border-left: 4px solid var(--neon-blue); min-height: 90px; }
         .digital-clock { font-family: 'Orbitron', sans-serif; font-size: 1rem; color: var(--neon-blue); text-shadow: 0 0 5px var(--neon-blue); background: rgba(0, 243, 255, 0.05); padding: 5px 15px; border-radius: 20px; border: 1px solid rgba(0, 243, 255, 0.2); }
+        body.light-mode .digital-clock {
+            color: #0d47a1; text-shadow: none; background: rgba(13, 71, 161, 0.1); border: 1px solid rgba(13, 71, 161, 0.2);
+        }
         .board-status { padding: 15px; border-radius: 10px; text-align: center; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.3); }
         .status-online { color: var(--neon-green); text-shadow: 0 0 10px rgba(0,255,102,0.5); }
         .status-sleep { color: #aaa; }
@@ -129,16 +171,18 @@
 
 <div class="container py-4">
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 border-bottom border-secondary pb-3 gap-3">
-        <div>
-            <h2 style="font-family: 'Orbitron', sans-serif; text-shadow: 0 0 10px var(--neon-blue); margin: 0;">
-                <i class="fa-solid fa-fish-fins text-info"></i> BKR NEXUS SEA BASS
-            </h2>
-            <small class="text-muted">ฟาร์มปลากะพงแม่น้ำบางนรา จ.นราธิวาส</small>
+        <div class="d-flex align-items-center">
+            <img id="app-logo" src="" alt="Logo" style="height: 45px; margin-right: 15px;" onerror="this.style.display='none'">
+            <div>
+                <h2 style="font-family: 'Orbitron', sans-serif; text-shadow: 0 0 10px var(--neon-blue); margin: 0;">
+                    <i class="fa-solid fa-fish-fins text-info"></i> BKR NEXUS SEA BASS
+                </h2>
+                <small class="text-muted">ฟาร์มปลากะพงแม่น้ำบางนรา จ.นราธิวาส</small>
+            </div>
         </div>
         <div class="d-flex align-items-center gap-2 flex-wrap">
             <div id="realtime-clock" class="digital-clock"><i class="fa-regular fa-clock"></i> 00:00:00</div>
             <button class="btn btn-sm btn-warning" onclick="toggleTheme()" title="สลับธีม"><i class="fa-solid fa-sun"></i></button>
-            <button class="btn btn-sm btn-info" onclick="openSettings()" title="ตั้งค่า API"><i class="fa-solid fa-gear"></i></button>
         </div>
     </div>
 
@@ -171,7 +215,7 @@
                         
                         <div class="gauge-center-info">
                             <div class="ec-main-val" id="ec-display">0.0</div>
-                            <div class="ec-main-label">EC (mS/cm)</div>
+                            <div class="ec-main-label">EC (mS/cm) <span id="ec-trend" style="font-size: 0.8rem; color: #aaa;"><i class="fa-solid fa-minus"></i></span></div>
                         </div>
                     </div>
 
@@ -184,7 +228,7 @@
                         <div class="sub-info-box">
                             <i class="fa-solid fa-battery-half" style="color: var(--neon-yellow);"></i>
                             <div style="color: var(--neon-yellow);" id="batt-display">0%</div>
-                            <small>Battery</small>
+                            <small><span id="batt-trend" style="color: #aaa;"><i class="fa-solid fa-minus"></i></span> Battery</small>
                         </div>
                         <div class="sub-info-box">
                             <i class="fa-solid fa-vial" style="color: var(--neon-red);"></i>
@@ -236,12 +280,14 @@
                     
                     <!-- Weather Box -->
                     <div class="ai-alert mb-3" style="border-left-color: var(--neon-yellow);">
-                        <h5 class="text-warning fw-bold mb-2"><i class="fa-solid fa-cloud-sun-rain"></i> สภาพอากาศวันนี้</h5>
+                        <h5 class="text-warning fw-bold mb-2"><i class="fa-solid fa-cloud-sun-rain"></i> สภาพอากาศวันนี้ (กรมอุตุฯ)</h5>
                         <div class="row text-center small">
-                            <div class="col-6"><i class="fa-solid fa-cloud-showers-heavy"></i> ฝนจะตกอีก: <span id="w-rain-time">2</span> ชม.</div>
-                            <div class="col-6"><i class="fa-solid fa-stopwatch"></i> ตกนาน: <span id="w-rain-dur">45</span> นาที</div>
-                            <div class="col-6 mt-2"><i class="fa-solid fa-sun"></i> แดด: <span id="w-sun">70</span>%</div>
-                            <div class="col-6 mt-2"><i class="fa-solid fa-wind"></i> ลม: <span id="w-wind">15</span> km/h</div>
+                            <div class="col-6"><i class="fa-solid fa-cloud-showers-heavy"></i> สถานะฝน: <span id="w-rain-status">--</span></div>
+                            <div class="col-6"><i class="fa-solid fa-droplet"></i> ปริมาณฝน: <span id="w-rain-mm">0</span> มม.</div>
+                            <div class="col-6 mt-2"><i class="fa-solid fa-hourglass-half"></i> ฝนจะตกอีก: <span id="w-rain-time">0</span> ชม.</div>
+                            <div class="col-6 mt-2"><i class="fa-solid fa-stopwatch"></i> ตกนาน: <span id="w-rain-dur">0</span> </div>
+                            <div class="col-6 mt-2"><i class="fa-solid fa-sun"></i> แดด: <span id="w-sun">0</span>%</div>
+                            <div class="col-6 mt-2"><i class="fa-solid fa-wind"></i> ลม: <span id="w-wind">0</span> km/h</div>
                         </div>
                     </div>
 
@@ -275,7 +321,7 @@
     <div id="page-reset" class="page-section text-center">
         <button class="btn btn-outline-secondary mb-5" onclick="navTo('page-home')"><i class="fa-solid fa-arrow-left"></i> กลับหน้าหลัก</button>
         <h3 style="font-family: 'Orbitron', sans-serif;">ระบบรีเซ็ต Buzzer & การแจ้งเตือน</h3>
-        <p class="text-muted">กด 1 ครั้งเพื่อรีเซ็ตเสียง Buzzer ที่กำลังดัง <br> หากกดค้าง 3 วินาที ระบบจะสั่งให้ Buzzer ดัง และส่งการแจ้งเตือนทุก 5 นาที จนกว่าจะกดรีเซ็ต</p>
+        <p class="text-muted">กดค้าง 3 วินาทีเพื่อเริ่มการแจ้งเตือน (ปุ่มจะกระพริบค้างไว้) <br> หากต้องการรีเซ็ต ให้กดปุ่มนั้นอีกครั้ง (กดธรรมดา) ระบบจะหยุดแจ้งเตือน</p>
         
         <div id="reset-circle-btn" onmousedown="startHold()" onmouseup="endHold()" ontouchstart="startHold()" ontouchend="endHold()">
             <i class="fa-solid fa-power-off"></i>
@@ -294,28 +340,6 @@
             </div>
             <div id="history-empty-msg" class="text-center text-muted py-4"><i class="fa-solid fa-folder-open fs-1 mb-2 opacity-50"></i><br>เลือกวันที่เพื่อดูข้อมูล</div>
             <div id="history-chart-container" style="height: 350px; display: none;"><canvas id="historyChart"></canvas></div>
-        </div>
-    </div>
-</div>
-
-<!-- Settings Modal -->
-<div class="modal fade" id="settingsModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content glass-card">
-            <div class="modal-header">
-                <h5 class="modal-title">ตั้งค่า API Keys</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <label class="form-label">Discord Webhook URL</label>
-                <input type="text" id="discord-webhook-input" class="form-control mb-3" placeholder="https://discord.com/api/webhooks/...">
-                
-                <label class="form-label">TMD API Key (กรมอุตุนิยมวิทยา)</label>
-                <input type="text" id="tmd-api-input" class="form-control mb-3" placeholder="ใส่ API Key ที่นี่">
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-cyber" onclick="saveSettings()">บันทึก</button>
-            </div>
         </div>
     </div>
 </div>
@@ -451,6 +475,12 @@
 </div>
 
 <script>
+    // ================= ตั้งค่า Discord และ Logo ตรงนี้ =================
+    const DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1496157514205761730/eSU_5aoU0R3YNVXwTP7vB7iyU_sD9PQJ3hfICvrwBvNOp_zzOpJkp1gj5eaEOs6Pic0C";
+    const APP_LOGO_URL = "https://scontent.fbkk22-7.fna.fbcdn.net/v/t39.30808-6/734275136_122109926223312449_4667972441419152863_n.jpg?stp=dst-jpg_tt6&cstp=mx2000x2000&ctp=p526x296&_nc_cat=107&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeGUaGW_MjaDutOOUVx9T8KgITr4IBZpuCAhOvggFmm4INdjxwCcXCUq46yNl2zQl3pR2fAEu51b2cch4iCL4Uvu&_nc_ohc=CarHd_Fi-gMQ7kNvwHCx3KQ&_nc_oc=AdoRPfTga6CNdOeBm_5H2_ulIBFi7-ps4mNIXwpTcZTQeMdpd1C5IeNH_xYgt6QUaa4&_nc_zt=23&_nc_ht=scontent.fbkk22-7.fna&_nc_gid=089rAB9F4ZqeFEVICqlH0A&_nc_ss=7b2a8&oh=00_AQBjklCUB-xGy5IJkLv5EN_nq3WTeU1rF3GcJf5HLjhk3A&oe=6A49A845"; // เปลี่ยนเป็น URL โลโก้แอปของคุณได้ที่นี่
+    document.getElementById('app-logo').src = APP_LOGO_URL;
+    // =============================================================
+
     function updateClock() {
         const now = new Date();
         const clockEl = document.getElementById('realtime-clock');
@@ -465,20 +495,17 @@
     }
 
     function toggleTheme() { document.body.classList.toggle('light-mode'); }
-    function openSettings() { new bootstrap.Modal(document.getElementById('settingsModal')).show(); }
-    function saveSettings() {
-        localStorage.setItem('discord_webhook', document.getElementById('discord-webhook-input').value);
-        localStorage.setItem('tmd_api', document.getElementById('tmd-api-input').value);
-        bootstrap.Modal.getInstance(document.getElementById('settingsModal')).hide();
-    }
 
     // Reset Buzzer Logic
     let isAlertActive = false;
     let holdTimer;
     let alertInterval;
+    let holdTriggered = false;
 
     function startHold() {
+        holdTriggered = false;
         holdTimer = setTimeout(() => {
+            holdTriggered = true; // กดค้างจนครบเวลา
             isAlertActive = true;
             document.getElementById('reset-circle-btn').classList.add('flashing');
             document.getElementById('reset-status-text').innerText = "สถานะ: กำลังส่งเสียง Buzzer และแจ้งเตือน (ทุก 5 นาที)";
@@ -494,8 +521,14 @@
 
     function endHold() {
         clearTimeout(holdTimer);
+        // ถ้าเป็นการปล่อยมือหลังจากกดค้างจนเปิดการแจ้งเตือน ให้คงสถานะไว้ (ไม่ทำอะไร)
+        if (holdTriggered) {
+            holdTriggered = false;
+            return;
+        }
+        
+        // ถ้าเป็นการกดธรรมดา (คลิก) และระบบกำลังเตือนอยู่ ให้ทำการรีเซ็ต
         if (isAlertActive) {
-            // Click to Reset
             isAlertActive = false;
             clearInterval(alertInterval);
             document.getElementById('reset-circle-btn').classList.remove('flashing');
@@ -503,19 +536,18 @@
             document.getElementById('reset-status-text').className = "text-success";
             sendDiscordAlert("✅ **ยกเลิกการแจ้งเตือนแล้ว** ระบบกลับสู่สถานะปกติ");
         } else {
-            // Just a quick click (no active alert)
+            // กดธรรมดาตอนที่ไม่มีการแจ้งเตือน
             document.getElementById('reset-status-text').innerText = "สถานะ: ปกติ (ไม่มีการแจ้งเตือน)";
         }
     }
 
     async function sendDiscordAlert(msg) {
-        const webhook = localStorage.getItem('discord_webhook');
-        if (!webhook) return;
+        if (!DISCORD_WEBHOOK || DISCORD_WEBHOOK === "ใส่ Webhook Discord ตรงนี้") return;
         try {
-            await fetch(webhook, {
+            await fetch(DISCORD_WEBHOOK, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ content: msg })
+                body: JSON.stringify({ content: msg })  
             });
         } catch(e) { console.error("Discord Error", e); }
     }
@@ -538,6 +570,7 @@
     let isBoardOnline = false, lastBoardActivityTime = Date.now() - 600000;
     let isFirstPhLoad = true, isFirstDistLoad = true, isWaterBad = false;
     let lowBattAlerted = false;
+    let prevEc = 0, prevBatt = 0;
 
     // Arc Lengths for SVG Gauges
     const ARC_LEN = { ec: 408, temp: 330, batt: 251, ph: 173 };
@@ -693,6 +726,21 @@
         setGauge('gauge-ec', val, 50); // Max 50 mS/cm
         todayChart.data.datasets[0].data.push({ x: Date.now(), y: val });
         todayChart.update('quiet');
+        
+        // EC Trend Indicator
+        let ecTrendEl = document.getElementById('ec-trend');
+        if (val > prevEc + 0.1) {
+            ecTrendEl.innerHTML = '<i class="fa-solid fa-arrow-up"></i> เพิ่มขึ้น';
+            ecTrendEl.style.color = 'var(--neon-green)';
+        } else if (val < prevEc - 0.1) {
+            ecTrendEl.innerHTML = '<i class="fa-solid fa-arrow-down"></i> ลดลง';
+            ecTrendEl.style.color = 'var(--neon-red)';
+        } else {
+            ecTrendEl.innerHTML = '<i class="fa-solid fa-minus"></i> คงที่';
+            ecTrendEl.style.color = '#aaa';
+        }
+        prevEc = val;
+
         window.runFishPondLogic();
     });
 
@@ -712,6 +760,20 @@
         todayChart.data.datasets[2].data.push({ x: Date.now(), y: val });
         todayChart.update('quiet');
         
+        // Batt Trend Indicator
+        let battTrendEl = document.getElementById('batt-trend');
+        if (val > prevBatt) {
+            battTrendEl.innerHTML = '<i class="fa-solid fa-arrow-up"></i> เพิ่มขึ้น';
+            battTrendEl.style.color = 'var(--neon-green)';
+        } else if (val < prevBatt) {
+            battTrendEl.innerHTML = '<i class="fa-solid fa-arrow-down"></i> ลดลง';
+            battTrendEl.style.color = 'var(--neon-red)';
+        } else {
+            battTrendEl.innerHTML = '<i class="fa-solid fa-minus"></i> คงที่';
+            battTrendEl.style.color = '#aaa';
+        }
+        prevBatt = val;
+        
         // Battery Alert
         if (val <= 40 && !lowBattAlerted) {
             sendDiscordAlert(`🔴 **แจ้งเตือนแบตเตอรี่ต่ำ** 🔴\nแบตเตอรี่เหลือ ${val}% ที่ฟาร์มแม่น้ำบางนรา กรุณาตรวจสอบระบบไฟสำรอง`);
@@ -728,70 +790,92 @@
         document.getElementById('water-dist-display').innerText = `ระดับน้ำจากเซนเซอร์: ${dist.toFixed(1)} cm`;
         window.runFishPondLogic();
     });
-    // ================= ฟังก์ชันจัดการข้อมูลอากาศ =================
-    const TMD_API_KEY = "74427e291c90f010fe89ba9327c16912"; // API Key กรมอุตุนิยมวิทยา
-    
-    async function updateWeather() {
-        /* 
-        [วิธีเชื่อม API จริง]
-        1. ไปสมัครและขอ Token ที่ https://data.tmd.go.th/
-        2. นำ API Key ด้านบนไปยิง Postman เพื่อขอ Bearer Token 
-        3. Fetch ข้อมูลสถานีอากาศใกล้แม่น้ำบางนรา (จ.นราธิวาส) แล้วเอาค่ามาแทนที่ในช่องด้านล่างนี้
-        */
 
-        // --- เริ่มต้นข้อมูล Mockup (กรุณาแก้ไขเมื่อต่อ API จริง) ---
-        let isRaining = Math.random() > 0.6; // โอกาสมีฝน 40%
-        let rainMm = isRaining ? Math.floor(Math.random() * 60) + 5 : 0;
+    // ================= ฟังก์ชันจัดการข้อมูลอากาศ (กรมอุตุนิยมวิทยา) =================
+// ================= ฟังก์ชันจัดการข้อมูลอากาศ (Open-Meteo แบบดึงค่าพยากรณ์จริง) =================
+
+async function updateWeather() {
+    // พิกัด แม่น้ำบางนรา จ.นราธิวาส
+    const lat = 6.42;
+    const lon = 101.82;
+    
+    // ดึงทั้งค่าปัจจุบัน (current) และค่าพยากรณ์รายชั่วโมงล่วงหน้า (hourly)
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=precipitation,wind_speed_10m&hourly=precipitation&timezone=Asia%2FBangkok`;
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์สภาพอากาศได้");
+        
+        const data = await response.json();
+        
+        // 1. ค่าฝนและลม ณ วินาทีนี้
+        let currentRainMm = data.current.precipitation || 0;
+        let windSpeed = data.current.wind_speed_10m || 0;
+
+        // 2. [คำนวณการคาดการณ์อนาคต] หาว่าใน 24 ชม. ข้างหน้า ฝนจะตกทั้งหมดกี่ชั่วโมง
+        let next24HoursRain = data.hourly.precipitation.slice(0, 24); // เอาข้อมูล 24 ชม. ถัดไป
+        let totalRainHours = next24HoursRain.filter(rain => rain > 0).length; // นับ ชม. ที่ฝนมากกว่า 0 มม.
+        
+        // 3. วิเคราะห์สถานะจากปริมาณฝนปัจจุบัน
         let rainStatus = "ไม่มีฝน";
-        let rainTime = 0;
-        let rainDur = 0;
-        let sun = 0;
-        let wind = 0;
-
-        // กำหนดสถานะฝน และค่าที่เกี่ยวข้อง
-        if (rainMm > 0 && rainMm <= 10) {
-            rainStatus = "ฝนตกเล็กน้อย";
-            rainTime = Math.floor(Math.random() * 2) + 1;
-            rainDur = Math.floor(Math.random() * 30) + 15;
-            sun = Math.floor(Math.random() * 20) + 30; // แดดน้อย
-            wind = Math.floor(Math.random() * 10) + 10;
-        } else if (rainMm > 10 && rainMm <= 35) {
-            rainStatus = "ฝนตกปานกลาง";
-            rainTime = Math.floor(Math.random() * 3) + 1;
-            rainDur = Math.floor(Math.random() * 60) + 30;
-            sun = Math.floor(Math.random() * 15) + 15; // แดดน้อยมาก
-            wind = Math.floor(Math.random() * 15) + 15;
-        } else if (rainMm > 35) {
-            rainStatus = "ฝนตกหนักมาก";
-            rainTime = Math.floor(Math.random() * 4) + 1;
-            rainDur = Math.floor(Math.random() * 90) + 45;
-            sun = Math.floor(Math.random() * 10) + 5;  // แดดน้อยสุด
-            wind = Math.floor(Math.random() * 25) + 20; // ลมแรง
+        let rainTime = totalRainHours; // คาดการณ์ว่าจะตกทั้งหมดกี่ ชม. ในวันนี้
+        let rainDur = totalRainHours * 45; // ประเมินนาทีรวมคร่าวๆ
+        
+        // --- เพิ่มตรรกะแปลงหน่วยเวลา (ถ้าเกิน 60 นาที ให้เป็น ชม. กับ นาที) ---
+        let rainDurText = "";
+        if (rainDur >= 60) {
+            let hours = Math.floor(rainDur / 60);
+            let mins = rainDur % 60;
+            rainDurText = mins > 0 ? `${hours} ชม. ${mins} นาที` : `${hours} ชม.`;
         } else {
-            // กรณีไม่มีฝน
-            sun = Math.floor(Math.random() * 30) + 60; // แดดเยอะ
-            wind = Math.floor(Math.random() * 15) + 5; // ลมสงบ
+            rainDurText = `${rainDur} นาที`;
         }
-        // --- สิ้นสุดข้อมูล Mockup ---
+        // -----------------------------------------------------------
 
-        // ส่งค่าไปแสดงผลที่หน้าจอ
+        let sun = 85; // เปอร์เซ็นต์แสงแดด
+
+        if (currentRainMm > 0 && currentRainMm <= 10) {
+            rainStatus = "ฝนตกเล็กน้อย";
+            sun = 40;
+        } else if (currentRainMm > 10 && currentRainMm <= 35) {
+            rainStatus = "ฝนตกปานกลาง";
+            sun = 20;
+        } else if (currentRainMm > 35) {
+            rainStatus = "ฝนตกหนักมาก";
+            sun = 5;
+        } else {
+            // ถ้าปัจจุบันฝนไม่ตก แต่ใน 24 ชม. นี้มีแนวโน้มฝนตก (คาดการณ์ล่วงหน้า)
+            if (totalRainHours > 0) {
+                rainStatus = "ท้องฟ้ามืดครึ้ม / มีแนวโน้มฝนตก";
+                sun = 50;
+            }
+        }
+
+        // 4. ส่งค่าไปแสดงผลที่หน้าจอ HTML
         document.getElementById('w-rain-status').innerText = rainStatus;
-        document.getElementById('w-rain-mm').innerText = rainMm;
-        document.getElementById('w-rain-time').innerText = rainTime;
-        document.getElementById('w-rain-dur').innerText = rainDur;
+        document.getElementById('w-rain-mm').innerText = currentRainMm.toFixed(1);
+        document.getElementById('w-rain-time').innerText = rainTime; 
+        
+        // ส่งค่าตัวหนังสือที่แปลงรูปแบบ "ชม. นาที" เรียบร้อยแล้วไปแสดงผล
+        document.getElementById('w-rain-dur').innerText = rainDurText; 
+        
         document.getElementById('w-sun').innerText = sun;
-        document.getElementById('w-wind').innerText = wind;
+        document.getElementById('w-wind').innerText = Math.round(windSpeed);
 
-        // แจ้งเตือน Discord ถ้าฝนตกหนักมาก (>35 มม.) หรือกำลังจะมีพายุ
-        if (rainMm > 35) {
-            sendDiscordAlert(`⚠️ **แจ้งเตือนฝนตกหนัก** ⚠️\nบริเวณแม่น้ำบางนรา จ.นราธิวาส ปริมาณฝน ${rainMm} มม. ฝนจะตกอีก ${rainTime} ชม. กรุณาเตรียมรับมือน้ำท่วมฉับพลันในฟาร์มปลา!`);
+        // 5. แจ้งเตือน Discord (ถ้าฝนตกหนัก หรือ คาดการณ์ว่าวันนี้ฝนจะตกมาราธอน)
+        if (currentRainMm > 35 || totalRainHours > 5) {
+            sendDiscordAlert(`⚠️ **แจ้งเตือนระบบสภาพอากาศฟาร์มปลา** ⚠️\nพิกัดแม่น้ำบางนรา จ.นราธิวาส\n- ปริมาณฝนปัจจุบัน: ${currentRainMm.toFixed(1)} มม.\n- คาดการณ์วันนี้ฝนจะตกทั้งหมด: **${rainTime} ชั่วโมง** (${rainDurText})\nโปรดเฝ้าระวังระดับน้ำในฟาร์มอย่างใกล้ชิด!`);
         }
+
+    } catch (error) {
+        console.error("Weather Error:", error);
+        document.getElementById('w-rain-status').innerText = "ระบบขัดข้อง (ลองใหม่อีกครั้ง)";
     }
-    
-    // อัปเดตทุก 1 ชั่วโมง (3600000 มิลลิวินาที) 
-    // *หากต้องการให้แจ้งเตือนบ่อยกว่านี้ในช่วงทดสอบ สามารถเปลี่ยนเป็น 300000 (5 นาที) ได้
-    setInterval(updateWeather, 3600000); 
-    updateWeather(); // เรียกใช้งานครั้งแรกทันทีที่โหลดเว็บ
+}
+
+// รันทุกๆ 1 ชั่วโมง และรันทันทีที่เปิดเว็บ
+setInterval(updateWeather, 3600000); 
+updateWeather();
 
     window.loadSpecificHistory = function() {
         const date = document.getElementById('history-date').value;
@@ -828,7 +912,7 @@
         "display": "standalone",
         "background_color": "#0b0f19",
         "theme_color": "#00f3ff",
-        "icons": [{ "src": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/svgs/solid/fish-fins.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any maskable" }]
+        "icons": [{ "src": APP_LOGO_URL, "sizes": "512x512", "type": "image/svg+xml", "purpose": "any maskable" }]
     };
     const stringManifest = JSON.stringify(manifest);
     const blob = new Blob([stringManifest], {type: 'application/json'});
