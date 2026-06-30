@@ -1,0 +1,18 @@
+{
+    "name": "BKR NEXUS SEA BASS FARM",
+    "short_name": "BKR Farm",
+    "description": "ระบบเฝ้าระวังฟาร์มปลากะพง ปากน้ำบางนรา",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "orientation": "portrait",
+    "background_color": "#0b0f19",
+    "theme_color": "#00f3ff",
+    "icons": [
+        {
+            "src": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/svgs/solid/fish-fins.svg",
+            "sizes": "512x512",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        }
+    ]
+}
