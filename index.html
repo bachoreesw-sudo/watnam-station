@@ -175,9 +175,9 @@
             <img id="app-logo" src="" alt="Logo" style="height: 45px; margin-right: 15px;" onerror="this.style.display='none'">
             <div>
                 <h2 style="font-family: 'Orbitron', sans-serif; text-shadow: 0 0 10px var(--neon-blue); margin: 0;">
-                    <i class="fa-solid fa-fish-fins text-info"></i> BKR NEXUS SEA BASS
+                    <i class="fa-solid fa-fish-fins text-info"></i> CEWT STATIAN
                 </h2>
-                <small class="text-muted">ฟาร์มปลากะพงแม่น้ำบางนรา จ.นราธิวาส</small>
+                <small class="text-muted">เครื่องวัดคุณภาพน้ำเพื่อเลี้ยงปลากระพงในพื้นที่ปากแม่น้ำบางนรา จ.นราธิวาส</small>
             </div>
         </div>
         <div class="d-flex align-items-center gap-2 flex-wrap">
@@ -272,7 +272,7 @@
         <div class="row mt-2 g-3">
             <div class="col-lg-6 col-md-12">
                 <div class="glass-card h-100 mb-0 d-flex flex-column">
-                    <h5 class="text-secondary mb-3"><i class="fa-solid fa-brain"></i> AI วิเคราะห์ระบบแม่น้ำบางนรา</h5>
+                    <h5 class="text-secondary mb-3"><i class="fa-solid fa-brain"></i> AI วิเคราะห์คุณภาพในแม่น้ำบางนรา</h5>
                     <div id="ai-alert-box" class="ai-alert mb-3 flex-grow-1">
                         <h5 class="text-warning fw-bold mb-2" id="ai-title"><i class="fa-solid fa-spinner fa-spin"></i> กำลังวิเคราะห์น้ำ...</h5>
                         <p class="text-light mb-0" id="ai-desc" style="font-size: 1.1rem; line-height: 1.5;">รอข้อมูลจากเซนเซอร์...</p>
@@ -321,7 +321,7 @@
     <div id="page-reset" class="page-section text-center">
         <button class="btn btn-outline-secondary mb-5" onclick="navTo('page-home')"><i class="fa-solid fa-arrow-left"></i> กลับหน้าหลัก</button>
         <h3 style="font-family: 'Orbitron', sans-serif;">ระบบรีเซ็ต Buzzer & การแจ้งเตือน</h3>
-        <p class="text-muted">กดค้าง 3 วินาทีเพื่อเริ่มการแจ้งเตือน (ปุ่มจะกระพริบค้างไว้) <br> หากต้องการรีเซ็ต ให้กดปุ่มนั้นอีกครั้ง (กดธรรมดา) ระบบจะหยุดแจ้งเตือน</p>
+        <p class="text-muted"> <br>ให้กดปุ่มรีเซ็ตระบบจะหยุดแจ้งเตือน</p>
         
         <div id="reset-circle-btn" onmousedown="startHold()" onmouseup="endHold()" ontouchstart="startHold()" ontouchend="endHold()">
             <i class="fa-solid fa-power-off"></i>
@@ -350,8 +350,7 @@
         <div class="modal-content glass-theme border-info" style="background-color: #000000 !important; border: 2px solid var(--neon-blue) !important; box-shadow: 0 0 40px rgba(0, 243, 255, 0.2) !important;">
             <div class="modal-header border-secondary p-4">
                 <h4 class="modal-title fw-bold" style="color: var(--neon-blue); font-family: 'Orbitron', sans-serif; letter-spacing: 2px;">
-                    <i class="fa-solid fa-book-medical me-3"></i> BKR NEXUS POND - OPERATIONAL MANUAL
-                </h4>
+                    <i class="fa-solid fa-book-medical me-3"></i>CEWT STATIAN
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
@@ -364,7 +363,7 @@
                         <ul class="manual-list" style="list-style-type: none; padding-left: 0;">
                             <li class="mb-3">
                                 <strong class="text-white"><i class="fa-solid fa-circle-dot me-2 text-info" style="font-size: 8px;"></i> ระบบ Cloud Real-time:</strong> 
-                                ข้อมูลถูกส่งจากบอร์ด ESP8266 ผ่านโปรโตคอล HTTPS ไปยัง Firebase Database โดยมีความหน่วง (Latency) ต่ำกว่า 500ms ทำให้การแสดงผลบน Dashboard เกือบจะเป็นปัจจุบันที่สุด
+                                ข้อมูลถูกส่งจากบอร์ด ESP32 ผ่านโปรโตคอล HTTPS ไปยัง Firebase Database โดยมีความหน่วง (Latency) ต่ำกว่า 500ms ทำให้การแสดงผลบน Dashboard เกือบจะเป็นปัจจุบันที่สุด
                             </li>
                             <li class="mb-3">
                                 <strong class="text-white"><i class="fa-solid fa-circle-dot me-2 text-info" style="font-size: 8px;"></i> การแสดงผลกราฟวิเคราะห์:</strong> 
@@ -511,10 +510,10 @@
             document.getElementById('reset-status-text').innerText = "สถานะ: กำลังส่งเสียง Buzzer และแจ้งเตือน (ทุก 5 นาที)";
             document.getElementById('reset-status-text').className = "text-danger";
             
-            sendDiscordAlert("🚨 **เริ่มการแจ้งเตือนฉุกเฉิน** 🚨\nระบบถูกเปิดใช้งานที่ฟาร์มแม่น้ำบางนรา!");
+            sendDiscordAlert("🚨 **เริ่มการแจ้งเตือนฉุกเฉิน** 🚨\nระบบถูกเปิดใช้งาน");
             
             alertInterval = setInterval(() => {
-                sendDiscordAlert("⏳ **แจ้งเตือนซ้ำ** ⏳\nระบบยังไม่ได้ถูกรีเซ็ต กรุณาตรวจสอบฟาร์มปลากะพง!");
+                sendDiscordAlert("⏳ **แจ้งเตือนซ้ำ** ⏳\nระบบยังไม่ได้ถูกรีเซ็ต กรุณาตรวจสอบ");
             }, 300000); // 5 Minutes
         }, 3000); // Hold 3s to arm
     }
@@ -667,12 +666,12 @@
         if (currentPh > 8.5 || currentEc > 40 || currentTemp > 35) {
             isWaterBad = true;
             aiTitle.innerHTML = `<i class="fa-solid fa-skull-crossbones"></i> 🔴 วิกฤต! น้ำเน่าเสีย/เค็มจัด`;
-            aiDesc.innerHTML = `ฟาร์มแม่น้ำบางนราเปิดสถานการณ์วิกฤต ค่าความเค็มหรือ pH สูงเกินไป ปลากะพงอาจตายจากพิษแอมโมเนีย กรุณาเปลี่ยนถ่ายน้ำทันที`;
+            aiDesc.innerHTML = `น้ำในแม่น้ำบางนราเปิดสถานการณ์วิกฤต ค่าความเค็มหรือ pH สูงเกินไป ปลากะพงอาจตายจากพิษแอมโมเนีย `;
             aiTitle.className = "text-danger fw-bold mb-2";
         } else if (currentPh < 6.5 || currentEc < 5) {
             isWaterBad = false;
             aiTitle.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> 🟡 แจ้งเตือน: น้ำเปรี้ยว/เค็มน้อย`;
-            aiDesc.innerText = `น้ำในแม่น้ำบางนราเจือจางเกินไป (ฝนตกหนัก) ความเครียดของปลากะพงเพิ่มสูง ควรเติมเกลือเพื่อปรับสมดุล`;
+            aiDesc.innerText = `น้ำในแม่น้ำบางนราเจือจางเกินไป (ฝนตกหนัก) ความเครียดของปลากะพงเพิ่มสูง `;
             aiTitle.className = "text-warning fw-bold mb-2";
         } else {
             isWaterBad = false;
@@ -776,7 +775,7 @@
         
         // Battery Alert
         if (val <= 40 && !lowBattAlerted) {
-            sendDiscordAlert(`🔴 **แจ้งเตือนแบตเตอรี่ต่ำ** 🔴\nแบตเตอรี่เหลือ ${val}% ที่ฟาร์มแม่น้ำบางนรา กรุณาตรวจสอบระบบไฟสำรอง`);
+            sendDiscordAlert(`🔴 **แจ้งเตือนแบตเตอรี่ต่ำ** 🔴\nแบตเตอรี่เหลือ ${val}% กรุณาตรวจสอบแบตเตอรี่`);
             lowBattAlerted = true;
         } else if (val > 40) {
             lowBattAlerted = false;
@@ -864,7 +863,7 @@ async function updateWeather() {
 
         // 5. แจ้งเตือน Discord (ถ้าฝนตกหนัก หรือ คาดการณ์ว่าวันนี้ฝนจะตกมาราธอน)
         if (currentRainMm > 35 || totalRainHours > 5) {
-            sendDiscordAlert(`⚠️ **แจ้งเตือนระบบสภาพอากาศฟาร์มปลา** ⚠️\nพิกัดแม่น้ำบางนรา จ.นราธิวาส\n- ปริมาณฝนปัจจุบัน: ${currentRainMm.toFixed(1)} มม.\n- คาดการณ์วันนี้ฝนจะตกทั้งหมด: **${rainTime} ชั่วโมง** (${rainDurText})\nโปรดเฝ้าระวังระดับน้ำในฟาร์มอย่างใกล้ชิด!`);
+            sendDiscordAlert(`⚠️ **แจ้งเตือนระบบสภาพอากาศ** ⚠️\nพิกัดแม่น้ำบางนรา จ.นราธิวาส\n- ปริมาณฝนปัจจุบัน: ${currentRainMm.toFixed(1)} มม.\n- คาดการณ์วันนี้ฝนจะตกทั้งหมด: **${rainTime} ชั่วโมง** (${rainDurText})\nโปรดเฝ้าระวังระดับน้ำในอย่างใกล้ชิด!`);
         }
 
     } catch (error) {
