@@ -1,7 +1,7 @@
 {
-    "name": "BKR NEXUS SEA BASS FARM",
-    "short_name": "BKR Farm",
-    "description": "ระบบเฝ้าระวังฟาร์มปลากะพง ปากน้ำบางนรา",
+    "name": "CEWT STATIAN",
+    "short_name": "CEWT STATIAN",
+    "description": "เครื่องวัดคุณภาพน้ำเพื่อเลี้ยงปลากระพงในพื้นที่ปากแม่น้ำบางนรา",
     "start_url": "./index.html",
     "display": "standalone",
     "orientation": "portrait",
