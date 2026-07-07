@@ -554,7 +554,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-    import { getDatabase, ref, onValue, get } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js";
+    import { getDatabase, ref, onValue, get, set } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDfvxif0ItvZhDGJr5MG3fSQ_9Lc7KWwio",
@@ -927,7 +927,7 @@ updateWeather();
 
     // ================================================================
     // ================= SIMULATOR (RANDOM FALLBACK) =================
-    // จำลองค่า EC (ความเค็ม), ระยะน้ำ (Distance) และแบตเตอรี่ 
+    // จำลองค่า EC (ความเค็ม), ระยะน้ำ (Distance), แบตเตอรี่, pH และอุณหภูมิ 
     // จะทำงานเฉพาะตอนที่ "ไม่มี" ข้อมูลจริงส่งเข้ามาจาก Firebase เท่านั้น
     // ถ้า Firebase ส่งค่าจริงเข้ามา ระบบจะยึดตามค่าจาก Firebase ทันที
     // (เพิ่มเติมด้านล่างนี้ทั้งหมด ไม่ได้แก้ไขโค้ดเดิมด้านบนแต่อย่างใด)
@@ -936,6 +936,8 @@ updateWeather();
     let lastRealEcTime = 0;
     let lastRealDistTime = 0;
     let lastRealBattTime = 0;
+    let lastRealPhTime = 0;
+    let lastRealTempTime = 0;
     const SIM_TIMEOUT_MS = 15000; // ถ้าไม่มีข้อมูลจริงจาก Firebase เกิน 15 วิ ถือว่า "ไม่มีข้อมูล" ให้เริ่มสุ่ม
 
     // เพิ่ม listener ใหม่แยกต่างหาก (ไม่ยุ่งกับ onValue เดิมของแต่ละ sensor)
@@ -948,6 +950,12 @@ updateWeather();
     });
     onValue(ref(db, 'sensor/battery'), (snap) => {
         if (snap.exists() && snap.val() !== null) lastRealBattTime = Date.now();
+    });
+    onValue(ref(db, 'sensor/ph'), (snap) => {
+        if (snap.exists() && snap.val() !== null) lastRealPhTime = Date.now();
+    });
+    onValue(ref(db, 'sensor/temperature'), (snap) => {
+        if (snap.exists() && snap.val() !== null) lastRealTempTime = Date.now();
     });
 
     function simShouldRun(lastRealTime) {
@@ -967,6 +975,8 @@ updateWeather();
     let simEcValue = 0.35;     // ช่วงจำลอง EC: 0.200 - 0.500
     let simDistValue = 45.0;   // ช่วงจำลองระยะน้ำ: 44.00 - 46.00 cm
     let simBattValue = 95;     // แบตเริ่มที่ 95% แล้วลดลงเรื่อยๆ ทีละ 1% ทุก 5 นาที
+    let simPhValue = 6.50;     // ช่วงจำลอง pH: 6.00 - 7.00
+    let simTempValue = 28.0;   // ช่วงจำลองอุณหภูมิ: 27.0 - 29.0 °C
 
     function runSensorSimulator() {
         // ---------- จำลอง EC (ความเค็ม) ----------
@@ -1020,9 +1030,29 @@ updateWeather();
                 lowBattAlerted = false;
             }
         }
+
+        // ---------- จำลองค่า pH (ช่วง 6.00 - 7.00) ----------
+        // หมายเหตุ: สุ่มค่าตลอดเวลาทุกรอบ ไม่สนใจว่า Firebase จะมีค่าจริงส่งมาหรือไม่
+        simPhValue = simRandomWalk(simPhValue, 6.00, 7.00, 0.03);
+        currentPh = simPhValue;
+        document.getElementById('ph-display').innerText = simPhValue.toFixed(2);
+        setGauge('gauge-ph', simPhValue, 14);
+        todayChart.data.datasets[3].data.push({ x: Date.now(), y: simPhValue });
+        todayChart.update('quiet');
+        window.runFishPondLogic();
+
+        // ---------- จำลองอุณหภูมิ (ช่วง 27.0 - 29.0 °C) ----------
+        // หมายเหตุ: สุ่มค่าตลอดเวลาทุกรอบ ไม่สนใจว่า Firebase จะมีค่าจริงส่งมาหรือไม่
+        simTempValue = simRandomWalk(simTempValue, 27.0, 29.0, 0.1);
+        currentTemp = simTempValue;
+        document.getElementById('temp-display-gauge').innerText = simTempValue.toFixed(1) + "°";
+        setGauge('gauge-temp', simTempValue, 50);
+        todayChart.data.datasets[1].data.push({ x: Date.now(), y: simTempValue });
+        todayChart.update('quiet');
+        window.runFishPondLogic();
     }
 
-    // สุ่มค่า EC และระยะน้ำ ทุก 3 วินาที (ให้ดูเหมือนอัพเดทแบบเรียลไทม์)
+    // สุ่มค่าทุกตัว ทุก 3 วินาที (ให้ดูเหมือนอัพเดทแบบเรียลไทม์)
     setInterval(runSensorSimulator, 3000);
 
     // ลดค่าแบตเตอรี่จำลองลงทีละ 1% ทุก 5 นาที (300000 ms) เฉพาะตอนที่ไม่มีข้อมูลแบตจริงจาก Firebase
@@ -1030,7 +1060,38 @@ updateWeather();
         if (simShouldRun(lastRealBattTime)) {
             simBattValue = Math.max(0, simBattValue - 1);
         }
-    }, 300000);
+    }, 900000);
+
+    // ================================================================
+    // ================= บันทึกค่าปัจจุบันลง Firebase History =================
+    // ทุกๆ 1 นาที ระบบจะบันทึกค่าปัจจุบัน (ไม่ว่าจะเป็นค่าจริงจากเซ็นเซอร์ หรือ
+    // ค่าที่จำลองขึ้นมา) ลงใน 'history/{วันที่}/{เวลา}' ของ Firebase
+    // เพื่อให้หน้า "ประวัติย้อนหลัง" สามารถดึงข้อมูลย้อนหลังมาแสดงกราฟได้จริง
+    // ================================================================
+
+    function saveHistorySnapshot() {
+        const now = new Date();
+        const yyyy = now.getFullYear();
+        const mm = String(now.getMonth() + 1).padStart(2, '0');
+        const dd = String(now.getDate()).padStart(2, '0');
+        const dateStr = `${yyyy}-${mm}-${dd}`;
+
+        const hh = String(now.getHours()).padStart(2, '0');
+        const mi = String(now.getMinutes()).padStart(2, '0');
+        const ss = String(now.getSeconds()).padStart(2, '0');
+        const timeStr = `${hh}:${mi}:${ss}`;
+
+        set(ref(db, `history/${dateStr}/${timeStr}`), {
+            ph: parseFloat(currentPh.toFixed(2)),
+            temperature: parseFloat(currentTemp.toFixed(1)),
+            ec: parseFloat(currentEc.toFixed(3)),
+            battery: Math.round(currentBatt),
+            distance: parseFloat(currentDist.toFixed(2))
+        }).catch(e => console.error("Save History Error:", e));
+    }
+
+    // บันทึกทุก 1 นาที
+    setInterval(saveHistorySnapshot, 60000);
 </script>
 </body>
 </html>
