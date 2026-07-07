@@ -924,6 +924,113 @@ updateWeather();
         setInterval(window.runFishPondLogic, 1000); 
         console.log("BKR Nexus Bang Nara Initialized...");
     }, 1000);
+
+    // ================================================================
+    // ================= SIMULATOR (RANDOM FALLBACK) =================
+    // จำลองค่า EC (ความเค็ม), ระยะน้ำ (Distance) และแบตเตอรี่ 
+    // จะทำงานเฉพาะตอนที่ "ไม่มี" ข้อมูลจริงส่งเข้ามาจาก Firebase เท่านั้น
+    // ถ้า Firebase ส่งค่าจริงเข้ามา ระบบจะยึดตามค่าจาก Firebase ทันที
+    // (เพิ่มเติมด้านล่างนี้ทั้งหมด ไม่ได้แก้ไขโค้ดเดิมด้านบนแต่อย่างใด)
+    // ================================================================
+
+    let lastRealEcTime = 0;
+    let lastRealDistTime = 0;
+    let lastRealBattTime = 0;
+    const SIM_TIMEOUT_MS = 15000; // ถ้าไม่มีข้อมูลจริงจาก Firebase เกิน 15 วิ ถือว่า "ไม่มีข้อมูล" ให้เริ่มสุ่ม
+
+    // เพิ่ม listener ใหม่แยกต่างหาก (ไม่ยุ่งกับ onValue เดิมของแต่ละ sensor)
+    // เพื่อใช้จับเวลาว่าล่าสุด Firebase ส่งข้อมูลจริงเข้ามาเมื่อไหร่
+    onValue(ref(db, 'sensor/ec'), (snap) => {
+        if (snap.exists() && snap.val() !== null) lastRealEcTime = Date.now();
+    });
+    onValue(ref(db, 'sensor/distance'), (snap) => {
+        if (snap.exists() && snap.val() !== null) lastRealDistTime = Date.now();
+    });
+    onValue(ref(db, 'sensor/battery'), (snap) => {
+        if (snap.exists() && snap.val() !== null) lastRealBattTime = Date.now();
+    });
+
+    function simShouldRun(lastRealTime) {
+        // true = ยังไม่มีข้อมูลจริงเข้ามาเลย หรือ Firebase เงียบไปนานเกินกำหนด -> ให้สุ่มค่าแทน
+        return (Date.now() - lastRealTime) > SIM_TIMEOUT_MS;
+    }
+
+    // สุ่มค่าแบบ Random Walk ให้ดูคล้ายค่าคลาดเคลื่อนจริงของเซนเซอร์ (ไม่กระโดดไปมาแบบสุ่มล้วนๆ)
+    function simRandomWalk(value, min, max, step) {
+        let next = value + (Math.random() * 2 - 1) * step;
+        if (next < min) next = min + Math.random() * step;
+        if (next > max) next = max - Math.random() * step;
+        return next;
+    }
+
+    // ค่าเริ่มต้นของตัวจำลอง
+    let simEcValue = 0.35;     // ช่วงจำลอง EC: 0.200 - 0.500
+    let simDistValue = 45.0;   // ช่วงจำลองระยะน้ำ: 44.00 - 46.00 cm
+    let simBattValue = 95;     // แบตเริ่มที่ 95% แล้วลดลงเรื่อยๆ ทีละ 1% ทุก 5 นาที
+
+    function runSensorSimulator() {
+        // ---------- จำลอง EC (ความเค็ม) ----------
+        if (simShouldRun(lastRealEcTime)) {
+            simEcValue = simRandomWalk(simEcValue, 0.200, 0.500, 0.01);
+            currentEc = simEcValue;
+            document.getElementById('ec-display').innerText = simEcValue.toFixed(3);
+            setGauge('gauge-ec', simEcValue, 50);
+            todayChart.data.datasets[0].data.push({ x: Date.now(), y: simEcValue });
+            todayChart.update('quiet');
+
+            let ecTrendEl = document.getElementById('ec-trend');
+            if (simEcValue > prevEc + 0.003) {
+                ecTrendEl.innerHTML = '<i class="fa-solid fa-arrow-up"></i> เพิ่มขึ้น';
+                ecTrendEl.style.color = 'var(--neon-green)';
+            } else if (simEcValue < prevEc - 0.003) {
+                ecTrendEl.innerHTML = '<i class="fa-solid fa-arrow-down"></i> ลดลง';
+                ecTrendEl.style.color = 'var(--neon-red)';
+            } else {
+                ecTrendEl.innerHTML = '<i class="fa-solid fa-minus"></i> คงที่';
+                ecTrendEl.style.color = '#aaa';
+            }
+            prevEc = simEcValue;
+            window.runFishPondLogic();
+        }
+
+        // ---------- จำลองระยะน้ำ (Distance) ----------
+        if (simShouldRun(lastRealDistTime)) {
+            simDistValue = simRandomWalk(simDistValue, 44.00, 46.00, 0.15);
+            currentDist = simDistValue;
+            document.getElementById('water-dist-display').innerText = `ระดับน้ำจากเซนเซอร์: ${simDistValue.toFixed(2)} cm `;
+            window.runFishPondLogic();
+        }
+
+        // ---------- จำลองแบตเตอรี่ (แสดงผล/กราฟ เฉพาะตอนไม่มีข้อมูลจริง) ----------
+        if (simShouldRun(lastRealBattTime)) {
+            currentBatt = simBattValue;
+            document.getElementById('batt-display').innerText = Math.round(simBattValue) + "% ";
+            setGauge('gauge-batt', simBattValue, 100);
+            todayChart.data.datasets[2].data.push({ x: Date.now(), y: simBattValue });
+            todayChart.update('quiet');
+
+            let battTrendEl = document.getElementById('batt-trend');
+            battTrendEl.innerHTML = '<i class="fa-solid fa-minus"></i> คงที่';
+            battTrendEl.style.color = '#aaa';
+
+            if (simBattValue <= 40 && !lowBattAlerted) {
+                sendDiscordAlert(`🔴 **แจ้งเตือนแบตเตอรี่ต่ำ ** 🔴\nแบตเตอรี่เหลือ ${Math.round(simBattValue)}% กรุณาตรวจสอบแบตเตอรี่`);
+                lowBattAlerted = true;
+            } else if (simBattValue > 40) {
+                lowBattAlerted = false;
+            }
+        }
+    }
+
+    // สุ่มค่า EC และระยะน้ำ ทุก 3 วินาที (ให้ดูเหมือนอัพเดทแบบเรียลไทม์)
+    setInterval(runSensorSimulator, 3000);
+
+    // ลดค่าแบตเตอรี่จำลองลงทีละ 1% ทุก 5 นาที (300000 ms) เฉพาะตอนที่ไม่มีข้อมูลแบตจริงจาก Firebase
+    setInterval(() => {
+        if (simShouldRun(lastRealBattTime)) {
+            simBattValue = Math.max(0, simBattValue - 1);
+        }
+    }, 300000);
 </script>
 </body>
 </html>
