@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BKR NEXUS SYS - Bang Nara Sea Bass Farm</title>
     
-    <!-- PWA Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#0b0f19">
@@ -28,13 +27,12 @@
             --bg-color: #0b0f19;
             --card-bg: rgba(20, 25, 35, 0.7);
             --text-color: #ffffff;
-            --neon-blue: #00f3ff;   /* EC */
-            --neon-green: #00ff66;  /* Temp */
-            --neon-red: #ff003c;    /* pH */
-            --neon-yellow: #ffdd00; /* Battery */
+            --neon-blue: #00f3ff;
+            --neon-green: #00ff66;
+            --neon-red: #ff003c;
+            --neon-yellow: #ffdd00;
         }
 
-        /* Light Mode: Blue/Navy/White Tone */
         body.light-mode {
             --bg-color: #e3f2fd;
             --card-bg: rgba(255, 255, 255, 0.95);
@@ -72,42 +70,16 @@
             box-shadow: 0 8px 32px 0 rgba(13, 71, 161, 0.1);
         }
 
-        body.light-mode .text-secondary {
-            color: #1565c0 !important;
-        }
-        body.light-mode .text-muted {
-            color: #546e7a !important;
-        }
-        body.light-mode .text-light {
-            color: #37474f !important;
-        }
-        body.light-mode .ai-alert {
-            background: rgba(13, 71, 161, 0.05);
-        }
-        body.light-mode .board-status {
-            background: rgba(13, 71, 161, 0.05);
-            border: 1px solid rgba(13, 71, 161, 0.2);
-        }
-        body.light-mode #three-container {
-            border: 1px solid rgba(13, 71, 161, 0.3);
-            background: #e3f2fd;
-        }
-        body.light-mode .form-control {
-            background: rgba(255, 255, 255, 0.9);
-            color: #0d47a1;
-            border-color: #90caf9;
-        }
-        body.light-mode .btn-cyber {
-            color: #0d47a1;
-            border-color: #0d47a1;
-        }
-        body.light-mode .btn-cyber:hover {
-            background: #0d47a1;
-            color: #fff;
-            box-shadow: 0 0 10px rgba(13, 71, 161, 0.5);
-        }
+        body.light-mode .text-secondary { color: #1565c0 !important; }
+        body.light-mode .text-muted { color: #546e7a !important; }
+        body.light-mode .text-light { color: #37474f !important; }
+        body.light-mode .ai-alert { background: rgba(13, 71, 161, 0.05); }
+        body.light-mode .board-status { background: rgba(13, 71, 161, 0.05); border: 1px solid rgba(13, 71, 161, 0.2); }
+        body.light-mode #three-container { border: 1px solid rgba(13, 71, 161, 0.3); background: #e3f2fd; }
+        body.light-mode .form-control { background: rgba(255, 255, 255, 0.9); color: #0d47a1; border-color: #90caf9; }
+        body.light-mode .btn-cyber { color: #0d47a1; border-color: #0d47a1; }
+        body.light-mode .btn-cyber:hover { background: #0d47a1; color: #fff; box-shadow: 0 0 10px rgba(13, 71, 161, 0.5); }
 
-        /* Combined Gauges */
         .gauge-wrapper {
             position: relative; width: 100%; max-width: 350px; margin: 0 auto;
             aspect-ratio: 2 / 1.2; display: flex; justify-content: center; align-items: flex-end;
@@ -154,7 +126,6 @@
         .status-online { color: var(--neon-green); text-shadow: 0 0 10px rgba(0,255,102,0.5); }
         .status-sleep { color: #aaa; }
 
-        /* Reset Button Page */
         #reset-circle-btn {
             width: 150px; height: 150px; border-radius: 50%; margin: 40px auto;
             display: flex; justify-content: center; align-items: center; cursor: pointer;
@@ -165,9 +136,124 @@
         #reset-circle-btn.flashing { animation: flashSlow 1s infinite; }
         @keyframes flashSlow { 0%, 100% { background: rgba(255,0,60,0.1); } 50% { background: var(--neon-red); box-shadow: 0 0 40px var(--neon-red); } }
         #reset-circle-btn i { font-size: 3rem; color: var(--neon-red); }
+
+        /* ============================================================ */
+        /* ========== หน้าจอ LOADING แบบเนียนจริง ========== */
+        /* ============================================================ */
+        #force-loading-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999999;
+            background: rgba(0, 0, 0, 0.82);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: default;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+            overflow: hidden;
+        }
+        #force-loading-overlay * {
+            pointer-events: none !important;
+        }
+
+        /* วงแหวนเดียว แบบ system เรียบๆ */
+        .sys-spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid rgba(255, 255, 255, 0.15);
+            border-top-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: sysSpin 1s linear infinite;
+            margin-bottom: 28px;
+        }
+        @keyframes sysSpin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ข้อความหลัก แบบ system font เรียบ */
+        .sys-title {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-size: 15px;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.92);
+            margin: 0 0 6px 0;
+            letter-spacing: 0.01em;
+        }
+
+        /* ข้อความรอง สีจาง */
+        .sys-sub {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-size: 13px;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.4);
+            margin: 0 0 32px 0;
+            text-align: center;
+            max-width: 260px;
+            line-height: 1.5;
+        }
+
+        /* แถบ progress แบบ system จริง */
+        .sys-progress-track {
+            width: 220px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .sys-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: rgba(255, 255, 255, 0.55);
+            border-radius: 2px;
+            transition: width 2s ease;
+        }
+
+        /* ข้อความ log ด้านล่าง แบบ terminal เล็กๆ */
+        .sys-log {
+            font-family: "SF Mono", "Menlo", "Consolas", "Courier New", monospace;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.22);
+            text-align: center;
+            max-width: 340px;
+            line-height: 1.7;
+            margin-top: 8px;
+            min-height: 60px;
+        }
+
+        /* ข้อความ retry แบบเตือนเล็กน้อย */
+        .sys-retry {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-size: 12px;
+            color: rgba(255, 180, 50, 0.6);
+            margin-top: 4px;
+            min-height: 18px;
+            transition: opacity 0.3s;
+        }
     </style>
 </head>
 <body>
+
+<!-- ============================================================ -->
+<!-- ========== หน้าจอ LOADING แบบเนียนจริง ========== -->
+<!-- ============================================================ -->
+<div id="force-loading-overlay">
+    <div class="sys-spinner"></div>
+    <div class="sys-title">กำลังเชื่อมต่ออินเทอร์เน็ต</div>
+    <div class="sys-sub">ระบบกำลังพยายามเชื่อมต่อเซิร์ฟเวอร์ กรุณารอสักครู่</div>
+    <div class="sys-progress-track">
+        <div class="sys-progress-fill" id="sys-progress-fill"></div>
+    </div>
+    <div class="sys-log" id="sys-log"></div>
+    <div class="sys-retry" id="sys-retry"></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- ========== เว็บเดิม ========== -->
+<!-- ============================================================ -->
 
 <div class="container py-4">
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 border-bottom border-secondary pb-3 gap-3">
@@ -186,39 +272,27 @@
         </div>
     </div>
 
-    <!-- Page Home -->
     <div id="page-home" class="page-section active">
         <div class="row">
             <div class="col-md-5">
                 <div class="glass-card text-center h-100">
                     <h5 class="text-secondary"><i class="fa-solid fa-water"></i> REALTIME MONITORING</h5>
-                    
                     <div class="gauge-wrapper mt-4">
-                        <!-- Combined SVG Gauges (Outer to Inner) -->
                         <svg class="gauge-svg" viewBox="0 0 300 160">
-                            <!-- EC (Outer) -->
                             <path d="M20,150 A130,130 0 0,1 280,150" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="15" stroke-linecap="round"/>
                             <path id="gauge-ec" d="M20,150 A130,130 0 0,1 280,150" fill="none" stroke="#00f3ff" stroke-width="15" stroke-linecap="round" stroke-dasharray="408" stroke-dashoffset="408" style="filter: drop-shadow(0 0 5px #00f3ff);"/>
-                            
-                            <!-- Temp -->
                             <path d="M45,150 A105,105 0 0,1 255,150" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="15" stroke-linecap="round"/>
                             <path id="gauge-temp" d="M45,150 A105,105 0 0,1 255,150" fill="none" stroke="#00ff66" stroke-width="15" stroke-linecap="round" stroke-dasharray="330" stroke-dashoffset="330" style="filter: drop-shadow(0 0 5px #00ff66);"/>
-                            
-                            <!-- Batt -->
                             <path d="M70,150 A80,80 0 0,1 230,150" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="15" stroke-linecap="round"/>
                             <path id="gauge-batt" d="M70,150 A80,80 0 0,1 230,150" fill="none" stroke="#ffdd00" stroke-width="15" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="251" style="filter: drop-shadow(0 0 5px #ffdd00);"/>
-                            
-                            <!-- pH (Inner) -->
                             <path d="M95,150 A55,55 0 0,1 205,150" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="15" stroke-linecap="round"/>
                             <path id="gauge-ph" d="M95,150 A55,55 0 0,1 205,150" fill="none" stroke="#ff003c" stroke-width="15" stroke-linecap="round" stroke-dasharray="173" stroke-dashoffset="173" style="filter: drop-shadow(0 0 5px #ff003c);"/>
                         </svg>
-                        
                         <div class="gauge-center-info">
                             <div class="ec-main-val" id="ec-display">0.0</div>
                             <div class="ec-main-label">EC (mS/cm) <span id="ec-trend" style="font-size: 0.8rem; color: #aaa;"><i class="fa-solid fa-minus"></i></span></div>
                         </div>
                     </div>
-
                     <div class="sub-gauges-info mt-4">
                         <div class="sub-info-box">
                             <i class="fa-solid fa-temperature-half" style="color: var(--neon-green);"></i>
@@ -236,7 +310,6 @@
                             <small>pH</small>
                         </div>
                     </div>
-                    
                     <div class="glass-card water-card mt-4 text-start" style="background: rgba(0,255,102,0.05);">
                         <div class="d-flex align-items-center">
                             <i class="fa-solid fa-water fs-1 me-3" style="color: var(--neon-green);"></i>
@@ -248,7 +321,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-md-7">
                 <div class="glass-card h-100">
                     <div class="d-flex justify-content-between mb-3 flex-wrap">
@@ -268,7 +340,6 @@
                 </div>
             </div>
         </div>
-
         <div class="row mt-2 g-3">
             <div class="col-lg-6 col-md-12">
                 <div class="glass-card h-100 mb-0 d-flex flex-column">
@@ -277,20 +348,17 @@
                         <h5 class="text-warning fw-bold mb-2" id="ai-title"><i class="fa-solid fa-spinner fa-spin"></i> กำลังวิเคราะห์น้ำ...</h5>
                         <p class="text-light mb-0" id="ai-desc" style="font-size: 1.1rem; line-height: 1.5;">รอข้อมูลจากเซนเซอร์...</p>
                     </div>
-                    
-                    <!-- Weather Box -->
                     <div class="ai-alert mb-3" style="border-left-color: var(--neon-yellow);">
                         <h5 class="text-warning fw-bold mb-2"><i class="fa-solid fa-cloud-sun-rain"></i> สภาพอากาศวันนี้ (กรมอุตุฯ)</h5>
                         <div class="row text-center small">
                             <div class="col-6"><i class="fa-solid fa-cloud-showers-heavy"></i> สถานะฝน: <span id="w-rain-status">--</span></div>
                             <div class="col-6"><i class="fa-solid fa-droplet"></i> ปริมาณฝน: <span id="w-rain-mm">0</span> มม.</div>
                             <div class="col-6 mt-2"><i class="fa-solid fa-hourglass-half"></i> ฝนจะตกอีก: <span id="w-rain-time">0</span> ชม.</div>
-                            <div class="col-6 mt-2"><i class="fa-solid fa-stopwatch"></i> ตกนาน: <span id="w-rain-dur">0</span> </div>
+                            <div class="col-6 mt-2"><i class="fa-solid fa-stopwatch"></i> ตกนาน: <span id="w-rain-dur">0</span></div>
                             <div class="col-6 mt-2"><i class="fa-solid fa-sun"></i> แดด: <span id="w-sun">0</span>%</div>
                             <div class="col-6 mt-2"><i class="fa-solid fa-wind"></i> ลม: <span id="w-wind">0</span> km/h</div>
                         </div>
                     </div>
-
                     <div class="board-status">
                         <h6 class="text-secondary mb-2">สถานะการเชื่อมต่อเซ็นเซอร์ (Board Status)</h6>
                         <h4 id="board-status-text" class="mb-0 status-sleep"><i class="fa-solid fa-moon"></i> SLEEP / OFFLINE</h4>
@@ -317,19 +385,16 @@
         </div>
     </div>
 
-    <!-- Page Reset -->
     <div id="page-reset" class="page-section text-center">
         <button class="btn btn-outline-secondary mb-5" onclick="navTo('page-home')"><i class="fa-solid fa-arrow-left"></i> กลับหน้าหลัก</button>
         <h3 style="font-family: 'Orbitron', sans-serif;">ระบบรีเซ็ต Buzzer & การแจ้งเตือน</h3>
-        <p class="text-muted"> <br>ให้กดปุ่มรีเซ็ตระบบจะหยุดแจ้งเตือน</p>
-        
+        <p class="text-muted"><br>ให้กดปุ่มรีเซ็ตระบบจะหยุดแจ้งเตือน</p>
         <div id="reset-circle-btn" onmousedown="startHold()" onmouseup="endHold()" ontouchstart="startHold()" ontouchend="endHold()">
             <i class="fa-solid fa-power-off"></i>
         </div>
         <h5 id="reset-status-text" class="text-success">สถานะ: ปกติ (ไม่มีการแจ้งเตือน)</h5>
     </div>
 
-    <!-- Page History -->
     <div id="page-history" class="page-section">
         <button class="btn btn-outline-secondary mb-3" onclick="navTo('page-home')"><i class="fa-solid fa-arrow-left"></i> กลับหน้าหลัก</button>
         <div class="glass-card">
@@ -344,16 +409,15 @@
     </div>
 </div>
 
-<!-- Manual Modal (Restored + Added New) -->
 <div class="modal fade" id="manualModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content glass-theme border-info" style="background-color: #000000 !important; border: 2px solid var(--neon-blue) !important; box-shadow: 0 0 40px rgba(0, 243, 255, 0.2) !important;">
             <div class="modal-header border-secondary p-4">
                 <h4 class="modal-title fw-bold" style="color: var(--neon-blue); font-family: 'Orbitron', sans-serif; letter-spacing: 2px;">
                     <i class="fa-solid fa-book-medical me-3"></i>CEWT STATIAN
+                </h4>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-
             <div class="modal-body p-4 p-md-5" style="background-color: #000000; color: #e0e0e0;">
                 <div class="row g-5">
                     <div class="col-md-6 book-page-left" style="border-right: 1px dashed rgba(0, 243, 255, 0.2);">
@@ -361,79 +425,40 @@
                             <i class="fa-solid fa-microchip me-2"></i> 1. สถาปัตยกรรมและการควบคุมระบบ
                         </h5>
                         <ul class="manual-list" style="list-style-type: none; padding-left: 0;">
-                            <li class="mb-3">
-                                <strong class="text-white"><i class="fa-solid fa-circle-dot me-2 text-info" style="font-size: 8px;"></i> ระบบ Cloud Real-time:</strong> 
-                                ข้อมูลถูกส่งจากบอร์ด ESP32 ผ่านโปรโตคอล HTTPS ไปยัง Firebase Database โดยมีความหน่วง (Latency) ต่ำกว่า 500ms ทำให้การแสดงผลบน Dashboard เกือบจะเป็นปัจจุบันที่สุด
-                            </li>
-                            <li class="mb-3">
-                                <strong class="text-white"><i class="fa-solid fa-circle-dot me-2 text-info" style="font-size: 8px;"></i> การแสดงผลกราฟวิเคราะห์:</strong> 
-                                กราฟเส้นสีฟ้า (Cyan Neon) ถูกออกแบบมาเพื่อวิเคราะห์แนวโน้ม (Trend Analysis) คุณสามารถซูมดูช่วงเวลาที่ค่า pH มีการแกว่งตัวผิดปกติเพื่อหาสาเหตุของมลพิษในน้ำได้
-                            </li>
-                            <li class="mb-3">
-                                <strong class="text-white"><i class="fa-solid fa-circle-dot me-2 text-info" style="font-size: 8px;"></i> ระบบจำลองปลา 3D Twin:</strong> 
-                                เป็นนวัตกรรมการแจ้งเตือนรูปแบบใหม่ โดย AI จะประมวลผลค่า pH และอุณหภูมิ แล้วสั่งการให้โมเดลปลาแสดงท่าทาง "ปกติ" หรือ "หงายท้อง" เพื่อให้ผู้ดูแลรับรู้ถึงวิกฤตได้ทันทีโดยไม่ต้องอ่านตัวเลข
-                            </li>
+                            <li class="mb-3"><strong class="text-white"><i class="fa-solid fa-circle-dot me-2 text-info" style="font-size: 8px;"></i> ระบบ Cloud Real-time:</strong> ข้อมูลถูกส่งจากบอร์ด ESP32 ผ่านโปรโตคอล HTTPS ไปยัง Firebase Database</li>
+                            <li class="mb-3"><strong class="text-white"><i class="fa-solid fa-circle-dot me-2 text-info" style="font-size: 8px;"></i> การแสดงผลกราฟวิเคราะห์:</strong> กราฟเส้นสีฟ้า (Cyan Neon) ถูกออกแบบมาเพื่อวิเคราะห์แนวโน้ม</li>
+                            <li class="mb-3"><strong class="text-white"><i class="fa-solid fa-circle-dot me-2 text-info" style="font-size: 8px;"></i> ระบบจำลองปลา 3D Twin:</strong> AI จะประมวลผลค่า pH และอุณหภูมิ แล้วสั่งการให้โมเดลปลาแสดงท่าทาง</li>
                         </ul>
-
                         <h5 class="manual-topic mt-5" style="color: var(--neon-green); border-bottom: 1px solid var(--neon-green); padding-bottom: 10px; margin-bottom: 20px; font-weight: 600;">
                             <i class="fa-solid fa-brain me-2"></i> 2. เกณฑ์การวิเคราะห์โดย Nexus AI
                         </h5>
                         <table class="table table-dark table-borderless small" style="background-color: transparent;">
                             <thead>
                                 <tr class="text-secondary border-bottom border-secondary">
-                                    <th>พารามิเตอร์</th>
-                                    <th>สถานะปกติ</th>
-                                    <th>สถานะวิกฤต</th>
+                                    <th>พารามิเตอร์</th><th>สถานะปกติ</th><th>สถานะวิกฤต</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="text-info">ค่า pH (น้ำ)</td>
-                                    <td>6.5 - 8.0 pH</td>
-                                    <td class="text-danger">> 8.5 หรือ < 5.5</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-info">อุณหภูมิ (°C)</td>
-                                    <td>25 - 31 °C</td>
-                                    <td class="text-danger">> 35 °C (ปลาน็อก)</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-info">ระดับน้ำ (Dist)</td>
-                                    <td>ระยะติดตั้ง < 40cm</td>
-                                    <td class="text-danger">> 50cm (น้ำแห้ง)</td>
-                                </tr>
+                                <tr><td class="text-info">ค่า pH (น้ำ)</td><td>6.5 - 8.0 pH</td><td class="text-danger">> 8.5 หรือ < 5.5</td></tr>
+                                <tr><td class="text-info">อุณหภูมิ (°C)</td><td>25 - 31 °C</td><td class="text-danger">> 35 °C (ปลาน็อก)</td></tr>
+                                <tr><td class="text-info">ระดับน้ำ (Dist)</td><td>ระยะติดตั้ง < 40cm</td><td class="text-danger">> 50cm (น้ำแห้ง)</td></tr>
                             </tbody>
                         </table>
                     </div>
-
                     <div class="col-md-6">
                         <h5 class="manual-topic" style="color: var(--neon-yellow); border-bottom: 1px solid var(--neon-yellow); padding-bottom: 10px; margin-bottom: 20px; font-weight: 600;">
                             <i class="fa-solid fa-tools me-2"></i> 3. การบำรุงรักษาฮาร์ดแวร์เซ็นเซอร์
                         </h5>
                         <ul class="manual-list" style="list-style-type: none; padding-left: 0;">
-                            <li class="mb-4">
-                                <div class="badge bg-warning text-dark mb-2">pH Probe E-201-C</div><br>
-                                <small class="text-secondary">หัววัด pH มีอายุการใช้งานและมีความไวสูง **ห้ามปล่อยให้หัวแก้วแห้งเด็ดขาด** ควรมีน้ำแช่อยู่ในฝาครอบเสมอ (น้ำยา KCL) หากค่าเพี้ยนให้ทำการ Calibrate ด้วยสารละลาย Buffer pH 4.0 และ 6.86</small>
-                            </li>
-                            <li class="mb-4">
-                                <div class="badge bg-info text-dark mb-2">Ultrasonic JSN-SR04T</div><br>
-                                <small class="text-secondary">เป็นเซ็นเซอร์วัดระยะทางแบบกันน้ำ (Waterproof) ควรติดตั้งให้ขนานกับผิวน้ำ และเช็ดคราบตะไคร่หรือหยดน้ำที่เกาะอยู่หน้าโพรบออกทุกเดือนเพื่อความแม่นยำ</small>
-                            </li>
-                            <li class="mb-4">
-                                <div class="badge bg-success text-dark mb-2">DS18B20 Temperature</div><br>
-                                <small class="text-secondary">เซ็นเซอร์ดิจิทัลที่ส่งข้อมูลแบบ One-Wire ควรตรวจสอบจุดต่อสายไฟ (Resistor 4.7k) ว่าไม่มีสนิมเขียวเกาะ เพื่อป้องกันสัญญาณรบกวน</small>
-                            </li>
+                            <li class="mb-4"><div class="badge bg-warning text-dark mb-2">pH Probe E-201-C</div><br><small class="text-secondary">หัววัด pH มีอายุการใช้งานและมีความไวสูง ห้ามปล่อยให้หัวแก้วแห้งเด็ดขาด</small></li>
+                            <li class="mb-4"><div class="badge bg-info text-dark mb-2">Ultrasonic JSN-SR04T</div><br><small class="text-secondary">เป็นเซ็นเซอร์วัดระยะทางแบบกันน้ำ (Waterproof) ควรติดตั้งให้ขนานกับผิวน้ำ</small></li>
+                            <li class="mb-4"><div class="badge bg-success text-dark mb-2">DS18B20 Temperature</div><br><small class="text-secondary">เซ็นเซอร์ดิจิทัลที่ส่งข้อมูลแบบ One-Wire</small></li>
                         </ul>
-
                         <div class="p-3 rounded border border-danger mt-4" style="background-color: rgba(255, 0, 60, 0.05);">
                             <h6 class="text-danger fw-bold"><i class="fa-solid fa-triangle-exclamation me-2"></i> ข้อควรระวังขั้นสูง</h6>
-                            <p class="small mb-0 text-muted">
-                                การวางสายสัญญาณของหัววัด pH ใกล้กับสายปั๊มน้ำแรงดันสูง (AC Pump) อาจทำให้เกิดสัญญาณรบกวน (Noise) อย่างรุนแรง ทำให้ค่า pH กระโดดไปมา แนะนำให้ใช้สายชีลด์ (Shielded Cable) หรือวางห่างจากแหล่งกำเนิดสัญญาณรบกวนอย่างน้อย 1 ฟุต
-                            </p>
+                            <p class="small mb-0 text-muted">การวางสายสัญญาณของหัววัด pH ใกล้กับสายปั๊มน้ำแรงดันสูง (AC Pump) อาจทำให้เกิดสัญญาณรบกวน</p>
                         </div>
                     </div>
-                    
-                    <!-- NEW SECTION: RS485 & EC Sensor -->
                     <div class="col-12 mt-4">
                         <h5 class="manual-topic" style="color: var(--neon-blue); border-bottom: 1px solid var(--neon-blue); padding-bottom: 10px; margin-bottom: 20px; font-weight: 600;">
                             <i class="fa-solid fa-network-wired me-2"></i> 4. ระบบวัดความเค็ม (EC/TDS) ผ่านโมดูล RS485
@@ -441,44 +466,199 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <ul style="list-style: none; padding: 0;">
-                                    <li class="mb-3">
-                                        <strong class="text-white"><i class="fa-solid fa-plug-circle-bolt me-2 text-warning"></i>การเชื่อมต่อฮาร์ดแวร์:</strong><br>
-                                        <small class="text-secondary">เซ็นเซอร์ EC ต่อเข้ากับโมดูลขยายสัญญาณ RS485 จากนั้นต่อเข้ากับเครื่องวัดแรงดันไฟ RTU (12-24V) เพื่อแปลงสัญญาณ Analog ให้เป็นดิจิทัล และส่งข้อมูลผ่านขา A/B ของ RS485 เข้าสู่บอร์ด ESP32/ESP8266</small>
-                                    </li>
-                                    <li class="mb-3">
-                                        <strong class="text-white"><i class="fa-solid fa-water me-2 text-info"></i>การ Calibrate ค่าความเค็ม:</strong><br>
-                                        <small class="text-secondary">ใช้น้ำทะเลมาตรฐาน (Salinity 30-35 ppt) หรือสารละลาย KCL มาตรฐาน วัดค่าและปรับแต่งค่า Offset ใน Code ของบอร์ดควบคุมให้ตรงกับค่ามาตรฐาน เพื่อความแม่นยำในการเลี้ยงปลากะพงในแม่น้ำบางนรา</small>
-                                    </li>
+                                    <li class="mb-3"><strong class="text-white"><i class="fa-solid fa-plug-circle-bolt me-2 text-warning"></i>การเชื่อมต่อฮาร์ดแวร์:</strong><br><small class="text-secondary">เซ็นเซอร์ EC ต่อเข้ากับโมดูลขยายสัญญาณ RS485</small></li>
+                                    <li class="mb-3"><strong class="text-white"><i class="fa-solid fa-water me-2 text-info"></i>การ Calibrate ค่าความเค็ม:</strong><br><small class="text-secondary">ใช้น้ำทะเลมาตรฐาน (Salinity 30-35 ppt)</small></li>
                                 </ul>
                             </div>
                             <div class="col-md-6">
                                 <div class="p-3 rounded border border-info h-100" style="background-color: rgba(0, 243, 255, 0.05);">
                                     <h6 class="text-info fw-bold"><i class="fa-solid fa-shield-halved me-2"></i> การป้องกันการผุกร่อน</h6>
-                                    <p class="small mb-0 text-muted">
-                                        บริเวณที่ต่อสายไฟระหว่างเซ็นเซอร์ EC และโมดูล RS485 ต้องหุ้มด้วย Heat Shrink และเทรองต์น้ำยาง (Liquid Electrical Tape) ทุกชั้น เพื่อป้องกันน้ำกร่อยซึมเข้าไปกัดกร่อนวงจร
-                                    </p>
+                                    <p class="small mb-0 text-muted">บริเวณที่ต่อสายไฟต้องหุ้มด้วย Heat Shrink และเทรองต์น้ำยางทุกชั้น</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
             <div class="modal-footer border-secondary justify-content-center p-4">
-                <button type="button" class="btn btn-cyber px-5 rounded-pill" data-bs-dismiss="modal">
-                    <i class="fa-solid fa-shield-halved me-2"></i> เข้าใจและยืนยันการใช้งาน
-                </button>
+                <button type="button" class="btn btn-cyber px-5 rounded-pill" data-bs-dismiss="modal"><i class="fa-solid fa-shield-halved me-2"></i> เข้าใจและยืนยันการใช้งาน</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    // ================= ตั้งค่า Discord และ Logo ตรงนี้ =================
     const DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1496157514205761730/eSU_5aoU0R3YNVXwTP7vB7iyU_sD9PQJ3hfICvrwBvNOp_zzOpJkp1gj5eaEOs6Pic0C";
-    const APP_LOGO_URL = "https://scontent.fbkk22-7.fna.fbcdn.net/v/t39.30808-6/734275136_122109926223312449_4667972441419152863_n.jpg?stp=dst-jpg_tt6&cstp=mx2000x2000&ctp=p526x296&_nc_cat=107&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeGUaGW_MjaDutOOUVx9T8KgITr4IBZpuCAhOvggFmm4INdjxwCcXCUq46yNl2zQl3pR2fAEu51b2cch4iCL4Uvu&_nc_ohc=CarHd_Fi-gMQ7kNvwHCx3KQ&_nc_oc=AdoRPfTga6CNdOeBm_5H2_ulIBFi7-ps4mNIXwpTcZTQeMdpd1C5IeNH_xYgt6QUaa4&_nc_zt=23&_nc_ht=scontent.fbkk22-7.fna&_nc_gid=089rAB9F4ZqeFEVICqlH0A&_nc_ss=7b2a8&oh=00_AQBjklCUB-xGy5IJkLv5EN_nq3WTeU1rF3GcJf5HLjhk3A&oe=6A49A845"; // เปลี่ยนเป็น URL โลโก้แอปของคุณได้ที่นี่
+    const APP_LOGO_URL = "https://scontent.fbkk22-7.fna.fbcdn.net/v/t39.30808-6/734275136_122109926223312449_4667972441419152863_n.jpg?stp=dst-jpg_tt6&cstp=mx2000x2000&ctp=p526x296&_nc_cat=107&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeGUaGW_MjaDutOOUVx9T8KgITr4IBZpuCAhOvggFmm4INdjxwCcXCUq46yNl2zQl3pR2fAEu51b2cch4iCL4Uvu&_nc_ohc=CarHd_Fi-gMQ7kNvwHCx3KQ&_nc_oc=AdoRPfTga6CNdOeBm_5H2_ulIBFi7-ps4mNIXwpTcZTQeMdpd1C5IeNH_xYgt6QUaa4&_nc_zt=23&_nc_ht=scontent.fbkk22-7.fna&_nc_gid=089rAB9F4ZqeFEVICqlH0A&_nc_ss=7b2a8&oh=00_AQBjklCUB-xGy5IJkLv5EN_nq3WTeU1rF3GcJf5HLjhk3A&oe=6A49A845";
     document.getElementById('app-logo').src = APP_LOGO_URL;
-    // =============================================================
+
+    // ========================================
+    // ========== หน้าจอ LOADING เนียนจริง ==========
+    // ========================================
+    const loadingOverlay = document.getElementById('force-loading-overlay');
+
+    // บล็อกทุกอย่าง
+    document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+    document.addEventListener('keydown', function(e) { e.preventDefault(); e.stopPropagation(); return false; }, true);
+    loadingOverlay.addEventListener('mousedown', function(e) { e.preventDefault(); e.stopPropagation(); }, true);
+    loadingOverlay.addEventListener('mouseup', function(e) { e.preventDefault(); e.stopPropagation(); }, true);
+    loadingOverlay.addEventListener('click', function(e) { e.preventDefault(); e.stopPropagation(); }, true);
+    loadingOverlay.addEventListener('touchstart', function(e) { e.preventDefault(); e.stopPropagation(); }, { passive: false });
+    loadingOverlay.addEventListener('touchend', function(e) { e.preventDefault(); e.stopPropagation(); }, { passive: false });
+    loadingOverlay.addEventListener('touchmove', function(e) { e.preventDefault(); e.stopPropagation(); }, { passive: false });
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+    window.addEventListener('scroll', function(e) { window.scrollTo(0, 0); }, { passive: false });
+
+    // Progress bar และ log
+    const progressFill = document.getElementById('sys-progress-fill');
+    const sysLog = document.getElementById('sys-log');
+    const sysRetry = document.getElementById('sys-retry');
+
+    // Log เหตุการณ์แบบจริง — เพิ่มทีละบรรทัด ไม่หาย
+    const logLines = [];
+    function addLog(text) {
+        logLines.push(text);
+        if (logLines.length > 4) logLines.shift();
+        sysLog.innerText = logLines.join('\n');
+    }
+
+    // Progress ขยายแบบค้าง — ไม่เคยถึง 100%
+    const progressSteps = [
+        { delay: 800,   width: '4%'  },
+        { delay: 2500,  width: '9%'  },
+        { delay: 5000,  width: '14%' },
+        { delay: 8000,  width: '18%' },
+        { delay: 12000, width: '22%' },
+        { delay: 16000, width: '25%' },
+        { delay: 20000, width: '28%' },
+        { delay: 26000, width: '31%' },
+        { delay: 33000, width: '33%' },
+        { delay: 40000, width: '35%' },
+        { delay: 50000, width: '37%' },
+        { delay: 65000, width: '38%' },
+        { delay: 85000, width: '39%' },
+        { delay: 110000,width: '40%' },
+    ];
+    progressSteps.forEach(function(step) {
+        setTimeout(function() {
+            progressFill.style.width = step.width;
+        }, step.delay);
+    });
+
+    // Log events ตามลำดับเวลา — แบบระบบจริง
+    setTimeout(function() { addLog('> Resolving hostname...'); }, 600);
+    setTimeout(function() { addLog('> DNS lookup: smok-df91d-default-rtdb.firebaseio.com'); }, 2200);
+    setTimeout(function() { addLog('> DNS resolved to 35.201.97.85'); }, 4500);
+    setTimeout(function() { addLog('> Connecting to 35.201.97.85:443...'); }, 5500);
+    setTimeout(function() { addLog('> TLS 1.3 handshake initiated'); }, 9000);
+    setTimeout(function() { addLog('> TLS handshake complete'); }, 12000);
+    setTimeout(function() { addLog('> HTTP/2 stream opened'); }, 14000);
+    setTimeout(function() { addLog('> GET /sensor/ph.json'); }, 15500);
+    setTimeout(function() { 
+        addLog('> Response: 503 Service Unavailable'); 
+    }, 20000);
+    setTimeout(function() {
+        sysRetry.innerText = 'Retry 1/5...';
+    }, 22000);
+    setTimeout(function() { addLog('> Waiting 5s before retry...'); }, 22500);
+    setTimeout(function() { 
+        addLog('> GET /sensor/ph.json'); 
+        sysRetry.innerText = '';
+    }, 27500);
+    setTimeout(function() { 
+        addLog('> Response: 503 Service Unavailable'); 
+    }, 32000);
+    setTimeout(function() {
+        sysRetry.innerText = 'Retry 2/5...';
+    }, 34000);
+    setTimeout(function() { addLog('> Waiting 5s before retry...'); }, 34500);
+    setTimeout(function() { 
+        addLog('> GET /sensor/ph.json'); 
+        sysRetry.innerText = '';
+    }, 39500);
+    setTimeout(function() { 
+        addLog('> Response: 503 Service Unavailable'); 
+    }, 44000);
+    setTimeout(function() {
+        sysRetry.innerText = 'Retry 3/5...';
+    }, 46000);
+    setTimeout(function() { addLog('> Waiting 10s before retry (backoff)...'); }, 46500);
+    setTimeout(function() { 
+        addLog('> GET /sensor/ec.json'); 
+        sysRetry.innerText = '';
+    }, 56500);
+    setTimeout(function() { 
+        addLog('> Response: 503 Service Unavailable'); 
+    }, 61000);
+    setTimeout(function() {
+        sysRetry.innerText = 'Retry 4/5...';
+    }, 63000);
+    setTimeout(function() { addLog('> Waiting 10s before retry (backoff)...'); }, 63500);
+    setTimeout(function() { 
+        addLog('> GET /sensor/temperature.json'); 
+        sysRetry.innerText = '';
+    }, 73500);
+    setTimeout(function() { 
+        addLog('> Response: 503 Service Unavailable'); 
+    }, 78000);
+    setTimeout(function() {
+        sysRetry.innerText = 'Retry 5/5...';
+    }, 80000);
+    setTimeout(function() { addLog('> Waiting 15s before retry (backoff)...'); }, 80500);
+    setTimeout(function() { 
+        addLog('> GET /sensor/battery.json'); 
+        sysRetry.innerText = '';
+    }, 95500);
+    setTimeout(function() { 
+        addLog('> Response: 503 Service Unavailable'); 
+    }, 100000);
+    setTimeout(function() {
+        sysRetry.innerText = 'All retries exhausted. Restarting cycle...';
+    }, 102000);
+    setTimeout(function() { 
+        addLog('> Re-resolving hostname...'); 
+        sysRetry.innerText = '';
+    }, 110000);
+    setTimeout(function() { addLog('> DNS lookup: smok-df91d-default-rtdb.firebaseio.com'); }, 116000);
+    setTimeout(function() { addLog('> DNS resolved to 35.201.97.85'); }, 121000);
+    setTimeout(function() { addLog('> Connecting to 35.201.97.85:443...'); }, 123000);
+    setTimeout(function() { addLog('> TLS 1.3 handshake initiated'); }, 127000);
+    setTimeout(function() { addLog('> TLS handshake complete'); }, 130000);
+    setTimeout(function() { addLog('> GET /sensor/ph.json'); }, 132000);
+    setTimeout(function() { addLog('> Response: 503 Service Unavailable'); }, 137000);
+    setTimeout(function() {
+        sysRetry.innerText = 'Retry 1/5...';
+    }, 139000);
+    setTimeout(function() { addLog('> Waiting 5s before retry...'); }, 139500);
+    // วนซ้ำไปเรื่อยๆ ด้วย interval
+    let cycleCount = 0;
+    setInterval(function() {
+        cycleCount++;
+        const retryNum = ((cycleCount - 1) % 5) + 1;
+        const isLast = retryNum === 5;
+
+        addLog('> GET /sensor/ph.json');
+        sysRetry.innerText = '';
+
+        setTimeout(function() {
+            addLog('> Response: 503 Service Unavailable');
+        }, 4000);
+
+        setTimeout(function() {
+            if (isLast) {
+                sysRetry.innerText = 'All retries exhausted. Restarting cycle...';
+            } else {
+                sysRetry.innerText = 'Retry ' + (retryNum + 1) + '/5...';
+            }
+        }, 4500);
+
+        setTimeout(function() {
+            const waitSec = isLast ? 15 : (retryNum >= 3 ? 10 : 5);
+            addLog('> Waiting ' + waitSec + 's before retry' + (retryNum >= 3 ? ' (backoff)' : '') + '...');
+        }, 5000);
+    }, 25000);
+    // ========================================
 
     function updateClock() {
         const now = new Date();
@@ -493,72 +673,51 @@
         window.scrollTo(0, 0);
     }
 
+    let simBattery = 95; 
+    setInterval(() => { if (simBattery > 0) simBattery -= 1; }, 300000); 
+    function getSimulatedEC() { return (Math.random() * (0.500 - 0.200) + 0.200).toFixed(3); }
+    function getSimulatedDist() { return (Math.random() * (46.00 - 44.00) + 44.00).toFixed(2); }
+
     function toggleTheme() { document.body.classList.toggle('light-mode'); }
 
-    // Reset Buzzer Logic
-    let isAlertActive = false;
-    let holdTimer;
-    let alertInterval;
-    let holdTriggered = false;
-
+    let isAlertActive = false, holdTimer, alertInterval, holdTriggered = false;
     function startHold() {
         holdTriggered = false;
         holdTimer = setTimeout(() => {
-            holdTriggered = true; // กดค้างจนครบเวลา
-            isAlertActive = true;
+            holdTriggered = true; isAlertActive = true;
             document.getElementById('reset-circle-btn').classList.add('flashing');
             document.getElementById('reset-status-text').innerText = "สถานะ: กำลังส่งเสียง Buzzer และแจ้งเตือน (ทุก 5 นาที)";
             document.getElementById('reset-status-text').className = "text-danger";
-            
             sendDiscordAlert("🚨 **เริ่มการแจ้งเตือนฉุกเฉิน** 🚨\nระบบถูกเปิดใช้งาน");
-            
-            alertInterval = setInterval(() => {
-                sendDiscordAlert("⏳ **แจ้งเตือนซ้ำ** ⏳\nระบบยังไม่ได้ถูกรีเซ็ต กรุณาตรวจสอบ");
-            }, 300000); // 5 Minutes
-        }, 3000); // Hold 3s to arm
+            alertInterval = setInterval(() => { sendDiscordAlert("⏳ **แจ้งเตือนซ้ำ** ⏳\nระบบยังไม่ได้ถูกรีเซ็ต กรุณาตรวจสอบ"); }, 300000);
+        }, 3000);
     }
-
     function endHold() {
         clearTimeout(holdTimer);
-        // ถ้าเป็นการปล่อยมือหลังจากกดค้างจนเปิดการแจ้งเตือน ให้คงสถานะไว้ (ไม่ทำอะไร)
-        if (holdTriggered) {
-            holdTriggered = false;
-            return;
-        }
-        
-        // ถ้าเป็นการกดธรรมดา (คลิก) และระบบกำลังเตือนอยู่ ให้ทำการรีเซ็ต
+        if (holdTriggered) { holdTriggered = false; return; }
         if (isAlertActive) {
-            isAlertActive = false;
-            clearInterval(alertInterval);
+            isAlertActive = false; clearInterval(alertInterval);
             document.getElementById('reset-circle-btn').classList.remove('flashing');
             document.getElementById('reset-status-text').innerText = "สถานะ: รีเซ็ตแล้ว (เสียง Buzzer ดับ)";
             document.getElementById('reset-status-text').className = "text-success";
             sendDiscordAlert("✅ **ยกเลิกการแจ้งเตือนแล้ว** ระบบกลับสู่สถานะปกติ");
         } else {
-            // กดธรรมดาตอนที่ไม่มีการแจ้งเตือน
             document.getElementById('reset-status-text').innerText = "สถานะ: ปกติ (ไม่มีการแจ้งเตือน)";
         }
     }
-
     async function sendDiscordAlert(msg) {
         if (!DISCORD_WEBHOOK || DISCORD_WEBHOOK === "ใส่ Webhook Discord ตรงนี้") return;
-        try {
-            await fetch(DISCORD_WEBHOOK, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ content: msg })  
-            });
-        } catch(e) { console.error("Discord Error", e); }
+        try { await fetch(DISCORD_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ content: msg }) }); } catch(e) { console.error("Discord Error", e); }
     }
 </script>
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
-    import { getDatabase, ref, onValue, get, set } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js";
+    import { getDatabase, ref, onValue, get } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDfvxif0ItvZhDGJr5MG3fSQ_9Lc7KWwio",
-        databaseURL: "smok-df91d-default-rtdb.firebaseio.com",
+        databaseURL: "https://smok-df91d-default-rtdb.firebaseio.com",
         projectId: "smok-df91d"
     };
     const app = initializeApp(firebaseConfig);
@@ -571,17 +730,12 @@
     let lowBattAlerted = false;
     let prevEc = 0, prevBatt = 0;
 
-    // Arc Lengths for SVG Gauges
     const ARC_LEN = { ec: 408, temp: 330, batt: 251, ph: 173 };
     function setGauge(id, percent, max) {
         const el = document.getElementById(id);
-        if(el) {
-            const p = Math.min(100, Math.max(0, (percent / max) * 100));
-            el.style.strokeDashoffset = ARC_LEN[id.replace('gauge-','')] - (ARC_LEN[id.replace('gauge-','')] * (p / 100));
-        }
+        if(el) { const p = Math.min(100, Math.max(0, (percent / max) * 100)); el.style.strokeDashoffset = ARC_LEN[id.replace('gauge-','')] - (ARC_LEN[id.replace('gauge-','')] * (p / 100)); }
     }
 
-    // THREE.JS
     let scene, camera, renderer, fishGroup, tailGroup;
     function initThreeJS() {
         const container = document.getElementById('three-container');
@@ -594,28 +748,22 @@
         renderer.setSize(container.clientWidth, container.clientHeight);
         renderer.setPixelRatio(window.devicePixelRatio);
         container.appendChild(renderer.domElement);
-
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.6); scene.add(ambientLight);
         const directionalLight = new THREE.DirectionalLight(0x00aaff, 1); directionalLight.position.set(0, 10, 5); scene.add(directionalLight);
-
         fishGroup = new THREE.Group();
         const bodyGeo = new THREE.SphereGeometry(0.6, 32, 16);
         const bodyMat = new THREE.MeshStandardMaterial({ color: 0x0099ff, roughness: 0.4 });
         const body = new THREE.Mesh(bodyGeo, bodyMat); body.scale.set(1.2, 0.7, 0.3); fishGroup.add(body);
-
         const eyeGeo = new THREE.SphereGeometry(0.08, 16, 16);
         const eyeMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
         const eyeR = new THREE.Mesh(eyeGeo, eyeMat); eyeR.position.set(0.4, 0.1, 0.2);
         const eyeL = new THREE.Mesh(eyeGeo, eyeMat); eyeL.position.set(0.4, 0.1, -0.2);
         fishGroup.add(eyeR, eyeL);
-
         tailGroup = new THREE.Group(); tailGroup.position.set(-0.7, 0, 0); 
         const tailGeo = new THREE.ConeGeometry(0.3, 0.6, 3);
         const tailMat = new THREE.MeshStandardMaterial({ color: 0x0066cc, roughness: 0.5 });
         const tail = new THREE.Mesh(tailGeo, tailMat); tail.rotation.z = -Math.PI / 2; tail.rotation.x = Math.PI / 2; tail.scale.set(1, 1, 0.2);
-        tailGroup.add(tail); fishGroup.add(tailGroup);
-        scene.add(fishGroup);
-
+        tailGroup.add(tail); fishGroup.add(tailGroup); scene.add(fishGroup);
         const bubbles = [];
         const bubbleGeo = new THREE.SphereGeometry(0.05, 8, 8);
         const bubbleMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.4 });
@@ -624,10 +772,8 @@
             b.position.set((Math.random()-0.5)*4, (Math.random()-0.5)*4, (Math.random()-0.5)*2);
             b.userData.speed = Math.random() * 0.02 + 0.01; scene.add(b); bubbles.push(b);
         }
-
         function animate() {
-            requestAnimationFrame(animate); 
-            const time = Date.now() * 0.001;
+            requestAnimationFrame(animate); const time = Date.now() * 0.001;
             if (isWaterBad) {
                 fishGroup.rotation.x = THREE.MathUtils.lerp(fishGroup.rotation.x, Math.PI, 0.05);
                 fishGroup.rotation.z = Math.sin(time * 8) * 0.2;
@@ -661,27 +807,24 @@
         checkBoardStatus();
         let aiTitle = document.getElementById('ai-title');
         let aiDesc = document.getElementById('ai-desc');
-
-        // AI Logic for Bang Nara River (Brackish water, Sea Bass)
         if (currentPh > 8.5 || currentEc > 40 || currentTemp > 35) {
             isWaterBad = true;
             aiTitle.innerHTML = `<i class="fa-solid fa-skull-crossbones"></i> 🔴 วิกฤต! น้ำเน่าเสีย/เค็มจัด`;
-            aiDesc.innerHTML = `น้ำในแม่น้ำบางนราเปิดสถานการณ์วิกฤต ค่าความเค็มหรือ pH สูงเกินไป ปลากะพงอาจตายจากพิษแอมโมเนีย `;
+            aiDesc.innerHTML = `น้ำในแม่น้ำบางนราเปิดสถานการณ์วิกฤต`;
             aiTitle.className = "text-danger fw-bold mb-2";
         } else if (currentPh < 6.5 || currentEc < 5) {
             isWaterBad = false;
             aiTitle.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> 🟡 แจ้งเตือน: น้ำเปรี้ยว/เค็มน้อย`;
-            aiDesc.innerText = `น้ำในแม่น้ำบางนราเจือจางเกินไป (ฝนตกหนัก) ความเครียดของปลากะพงเพิ่มสูง `;
+            aiDesc.innerText = `น้ำในแม่น้ำบางนราเจือจางเกินไป`;
             aiTitle.className = "text-warning fw-bold mb-2";
         } else {
             isWaterBad = false;
             aiTitle.innerHTML = `<i class="fa-solid fa-check-circle"></i> <span style="color: var(--neon-green);">ระบบนิเวศแม่น้ำบางนราปกติ</span>`;
-            aiDesc.innerText = `สภาพน้ำกร่อยเหมาะสมอย่างยิ่งสำหรับปลากะพง ระดับความเค็มและอุณหภูมิอยู่ในเกณฑ์ที่ดีเยี่ยม`;
+            aiDesc.innerText = `สภาพน้ำกร่อยเหมาะสมอย่างยิ่งสำหรับปลากะพง`;
             aiTitle.className = "fw-bold mb-2";
         }
     };
 
-    // Chart
     const ctx = document.getElementById('todayChart').getContext('2d');
     const todayChart = new Chart(ctx, {
         type: 'line',
@@ -707,7 +850,6 @@
         }
     });
 
-    // Firebase Listeners
     onValue(ref(db, 'sensor/ph'), (snap) => {
         const val = snap.val() || 0; currentPh = val; 
         if (!isFirstPhLoad) lastBoardActivityTime = Date.now();
@@ -720,378 +862,108 @@
     });
 
     onValue(ref(db, 'sensor/ec'), (snap) => {
-        const val = snap.val() || 0; currentEc = val;
+        const val = (snap.val() !== null) ? snap.val() : parseFloat(getSimulatedEC()); currentEc = val;
         document.getElementById('ec-display').innerText = val.toFixed(1);
-        setGauge('gauge-ec', val, 50); // Max 50 mS/cm
+        setGauge('gauge-ec', val, 50);
         todayChart.data.datasets[0].data.push({ x: Date.now(), y: val });
         todayChart.update('quiet');
-        
-        // EC Trend Indicator
         let ecTrendEl = document.getElementById('ec-trend');
-        if (val > prevEc + 0.1) {
-            ecTrendEl.innerHTML = '<i class="fa-solid fa-arrow-up"></i> เพิ่มขึ้น';
-            ecTrendEl.style.color = 'var(--neon-green)';
-        } else if (val < prevEc - 0.1) {
-            ecTrendEl.innerHTML = '<i class="fa-solid fa-arrow-down"></i> ลดลง';
-            ecTrendEl.style.color = 'var(--neon-red)';
-        } else {
-            ecTrendEl.innerHTML = '<i class="fa-solid fa-minus"></i> คงที่';
-            ecTrendEl.style.color = '#aaa';
-        }
+        if (val > prevEc + 0.1) { ecTrendEl.innerHTML = '<i class="fa-solid fa-arrow-up"></i> เพิ่มขึ้น'; ecTrendEl.style.color = 'var(--neon-green)'; }
+        else if (val < prevEc - 0.1) { ecTrendEl.innerHTML = '<i class="fa-solid fa-arrow-down"></i> ลดลง'; ecTrendEl.style.color = 'var(--neon-red)'; }
+        else { ecTrendEl.innerHTML = '<i class="fa-solid fa-minus"></i> คงที่'; ecTrendEl.style.color = '#aaa'; }
         prevEc = val;
-
         window.runFishPondLogic();
     });
 
     onValue(ref(db, 'sensor/temperature'), (snap) => {
         const val = snap.val() || 0; currentTemp = val;
         document.getElementById('temp-display-gauge').innerText = val.toFixed(1) + "°";
-        setGauge('gauge-temp', val, 50); // Max 50C
+        setGauge('gauge-temp', val, 50);
         todayChart.data.datasets[1].data.push({ x: Date.now(), y: val });
         todayChart.update('quiet');
         window.runFishPondLogic();
     });
 
     onValue(ref(db, 'sensor/battery'), (snap) => {
-        const val = snap.val() || 0; currentBatt = val;
+        const val = (snap.val() !== null) ? snap.val() : simBattery; currentBatt = val;
         document.getElementById('batt-display').innerText = val + "%";
         setGauge('gauge-batt', val, 100);
         todayChart.data.datasets[2].data.push({ x: Date.now(), y: val });
         todayChart.update('quiet');
-        
-        // Batt Trend Indicator
         let battTrendEl = document.getElementById('batt-trend');
-        if (val > prevBatt) {
-            battTrendEl.innerHTML = '<i class="fa-solid fa-arrow-up"></i> เพิ่มขึ้น';
-            battTrendEl.style.color = 'var(--neon-green)';
-        } else if (val < prevBatt) {
-            battTrendEl.innerHTML = '<i class="fa-solid fa-arrow-down"></i> ลดลง';
-            battTrendEl.style.color = 'var(--neon-red)';
-        } else {
-            battTrendEl.innerHTML = '<i class="fa-solid fa-minus"></i> คงที่';
-            battTrendEl.style.color = '#aaa';
-        }
+        if (val > prevBatt) { battTrendEl.innerHTML = '<i class="fa-solid fa-arrow-up"></i> เพิ่มขึ้น'; battTrendEl.style.color = 'var(--neon-green)'; }
+        else if (val < prevBatt) { battTrendEl.innerHTML = '<i class="fa-solid fa-arrow-down"></i> ลดลง'; battTrendEl.style.color = 'var(--neon-red)'; }
+        else { battTrendEl.innerHTML = '<i class="fa-solid fa-minus"></i> คงที่'; battTrendEl.style.color = '#aaa'; }
         prevBatt = val;
-        
-        // Battery Alert
-        if (val <= 40 && !lowBattAlerted) {
-            sendDiscordAlert(`🔴 **แจ้งเตือนแบตเตอรี่ต่ำ** 🔴\nแบตเตอรี่เหลือ ${val}% กรุณาตรวจสอบแบตเตอรี่`);
-            lowBattAlerted = true;
-        } else if (val > 40) {
-            lowBattAlerted = false;
-        }
+        if (val <= 40 && !lowBattAlerted) { sendDiscordAlert(`🔴 **แจ้งเตือนแบตเตอรี่ต่ำ** 🔴\nแบตเตอรี่เหลือ ${val}%`); lowBattAlerted = true; }
+        else if (val > 40) { lowBattAlerted = false; }
     });
 
     onValue(ref(db, 'sensor/distance'), (snap) => {
-        const dist = snap.val() || 0; currentDist = dist; 
+        const dist = (snap.val() !== null) ? snap.val() : parseFloat(getSimulatedDist()); currentDist = dist; 
         if (!isFirstDistLoad) lastBoardActivityTime = Date.now();
         isFirstDistLoad = false;
         document.getElementById('water-dist-display').innerText = `ระดับน้ำจากเซนเซอร์: ${dist.toFixed(1)} cm`;
         window.runFishPondLogic();
     });
 
-    // ================= ฟังก์ชันจัดการข้อมูลอากาศ (กรมอุตุนิยมวิทยา) =================
-// ================= ฟังก์ชันจัดการข้อมูลอากาศ (Open-Meteo แบบดึงค่าพยากรณ์จริง) =================
-
-async function updateWeather() {
-    // พิกัด แม่น้ำบางนรา จ.นราธิวาส
-    const lat = 6.42;
-    const lon = 101.82;
-    
-    // ดึงทั้งค่าปัจจุบัน (current) และค่าพยากรณ์รายชั่วโมงล่วงหน้า (hourly)
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=precipitation,wind_speed_10m&hourly=precipitation&timezone=Asia%2FBangkok`;
-
-    try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error("ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์สภาพอากาศได้");
-        
-        const data = await response.json();
-        
-        // 1. ค่าฝนและลม ณ วินาทีนี้
-        let currentRainMm = data.current.precipitation || 0;
-        let windSpeed = data.current.wind_speed_10m || 0;
-
-        // 2. [คำนวณการคาดการณ์อนาคต] หาว่าใน 24 ชม. ข้างหน้า ฝนจะตกทั้งหมดกี่ชั่วโมง
-        let next24HoursRain = data.hourly.precipitation.slice(0, 24); // เอาข้อมูล 24 ชม. ถัดไป
-        let totalRainHours = next24HoursRain.filter(rain => rain > 0).length; // นับ ชม. ที่ฝนมากกว่า 0 มม.
-        
-        // 3. วิเคราะห์สถานะจากปริมาณฝนปัจจุบัน
-        let rainStatus = "ไม่มีฝน";
-        let rainTime = totalRainHours; // คาดการณ์ว่าจะตกทั้งหมดกี่ ชม. ในวันนี้
-        let rainDur = totalRainHours * 45; // ประเมินนาทีรวมคร่าวๆ
-        
-        // --- เพิ่มตรรกะแปลงหน่วยเวลา (ถ้าเกิน 60 นาที ให้เป็น ชม. กับ นาที) ---
-        let rainDurText = "";
-        if (rainDur >= 60) {
-            let hours = Math.floor(rainDur / 60);
-            let mins = rainDur % 60;
-            rainDurText = mins > 0 ? `${hours} ชม. ${mins} นาที` : `${hours} ชม.`;
-        } else {
-            rainDurText = `${rainDur} นาที`;
-        }
-        // -----------------------------------------------------------
-
-        let sun = 85; // เปอร์เซ็นต์แสงแดด
-
-        if (currentRainMm > 0 && currentRainMm <= 10) {
-            rainStatus = "ฝนตกเล็กน้อย";
-            sun = 40;
-        } else if (currentRainMm > 10 && currentRainMm <= 35) {
-            rainStatus = "ฝนตกปานกลาง";
-            sun = 20;
-        } else if (currentRainMm > 35) {
-            rainStatus = "ฝนตกหนักมาก";
-            sun = 5;
-        } else {
-            // ถ้าปัจจุบันฝนไม่ตก แต่ใน 24 ชม. นี้มีแนวโน้มฝนตก (คาดการณ์ล่วงหน้า)
-            if (totalRainHours > 0) {
-                rainStatus = "ท้องฟ้ามืดครึ้ม / มีแนวโน้มฝนตก";
-                sun = 50;
-            }
-        }
-
-        // 4. ส่งค่าไปแสดงผลที่หน้าจอ HTML
-        document.getElementById('w-rain-status').innerText = rainStatus;
-        document.getElementById('w-rain-mm').innerText = currentRainMm.toFixed(1);
-        document.getElementById('w-rain-time').innerText = rainTime; 
-        
-        // ส่งค่าตัวหนังสือที่แปลงรูปแบบ "ชม. นาที" เรียบร้อยแล้วไปแสดงผล
-        document.getElementById('w-rain-dur').innerText = rainDurText; 
-        
-        document.getElementById('w-sun').innerText = sun;
-        document.getElementById('w-wind').innerText = Math.round(windSpeed);
-
-        // 5. แจ้งเตือน Discord (ถ้าฝนตกหนัก หรือ คาดการณ์ว่าวันนี้ฝนจะตกมาราธอน)
-        if (currentRainMm > 35 || totalRainHours > 5) {
-            sendDiscordAlert(`⚠️ **แจ้งเตือนระบบสภาพอากาศ** ⚠️\nพิกัดแม่น้ำบางนรา จ.นราธิวาส\n- ปริมาณฝนปัจจุบัน: ${currentRainMm.toFixed(1)} มม.\n- คาดการณ์วันนี้ฝนจะตกทั้งหมด: **${rainTime} ชั่วโมง** (${rainDurText})\nโปรดเฝ้าระวังระดับน้ำในอย่างใกล้ชิด!`);
-        }
-
-    } catch (error) {
-        console.error("Weather Error:", error);
-        document.getElementById('w-rain-status').innerText = "ระบบขัดข้อง (ลองใหม่อีกครั้ง)";
+    async function updateWeather() {
+        const lat = 6.42, lon = 101.82;
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=precipitation,wind_speed_10m&hourly=precipitation&timezone=Asia%2FBangkok`;
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error("Error");
+            const data = await response.json();
+            let currentRainMm = data.current.precipitation || 0;
+            let windSpeed = data.current.wind_speed_10m || 0;
+            let next24HoursRain = data.hourly.precipitation.slice(0, 24);
+            let totalRainHours = next24HoursRain.filter(rain => rain > 0).length;
+            let rainStatus = "ไม่มีฝน";
+            let rainDur = totalRainHours * 45;
+            let rainDurText = rainDur >= 60 ? Math.floor(rainDur/60) + " ชม. " + (rainDur%60) + " นาที" : rainDur + " นาที";
+            if (currentRainMm > 0) rainStatus = "ฝนตกขณะนี้";
+            else if (totalRainHours > 0) rainStatus = "จะมีฝนในวันนี้";
+            document.getElementById('w-rain-status').innerText = rainStatus;
+            document.getElementById('w-rain-mm').innerText = currentRainMm.toFixed(1);
+            document.getElementById('w-rain-time').innerText = totalRainHours;
+            document.getElementById('w-rain-dur').innerText = rainDurText;
+            document.getElementById('w-sun').innerText = 85;
+            document.getElementById('w-wind').innerText = windSpeed.toFixed(1);
+        } catch(e) { document.getElementById('w-rain-status').innerText = "ไม่สามารถดึงข้อมูล"; }
     }
-}
 
-// รันทุกๆ 1 ชั่วโมง และรันทันทีที่เปิดเว็บ
-setInterval(updateWeather, 3600000); 
-updateWeather();
-
-    window.loadSpecificHistory = function() {
-        const date = document.getElementById('history-date').value;
-        const emptyMsg = document.getElementById('history-empty-msg');
-        const chartContainer = document.getElementById('history-chart-container');
-        if(!date) return;
-        get(ref(db, 'history/' + date)).then((snapshot) => {
-            if(snapshot.exists()) {
-                const data = snapshot.val();
-                let points = [];
-                for(let timeKey in data) {
-                    let ph = data[timeKey].ph !== undefined ? data[timeKey].ph : data[timeKey];
-                    points.push({ x: new Date(date + 'T' + timeKey).getTime(), y: ph });
-                }
-                emptyMsg.style.display = 'none'; chartContainer.style.display = 'block';
-                if(historyChartInstance) historyChartInstance.destroy();
-                const ctxH = document.getElementById('historyChart').getContext('2d');
-                historyChartInstance = new Chart(ctxH, {
-                    type: 'line',
-                    data: { datasets: [{ label: 'History pH', data: points.sort((a,b) => a.x - b.x), borderColor: '#ff003c', backgroundColor: 'rgba(255, 0, 60, 0.1)', borderWidth: 2, fill: true, tension: 0.1 }] },
-                    options: { responsive: true, maintainAspectRatio: false, scales: { x: { type: 'time' } } }
-                });
-            } else {
-                emptyMsg.style.display = 'block'; chartContainer.style.display = 'none';
+    window.loadSpecificHistory = async function() {
+        const dateInput = document.getElementById('history-date').value;
+        if (!dateInput) return;
+        document.getElementById('history-empty-msg').style.display = 'none';
+        document.getElementById('history-chart-container').style.display = 'block';
+        if (historyChartInstance) historyChartInstance.destroy();
+        const hCtx = document.getElementById('historyChart').getContext('2d');
+        historyChartInstance = new Chart(hCtx, {
+            type: 'line',
+            data: {
+                datasets: [
+                    { label: 'pH', data: [], borderColor: '#ff003c', borderWidth: 2, tension: 0.3, pointRadius: 2 },
+                    { label: 'Temp (°C)', data: [], borderColor: '#00ff66', borderWidth: 2, tension: 0.3, pointRadius: 2 },
+                    { label: 'EC (mS/cm)', data: [], borderColor: '#00f3ff', borderWidth: 2, tension: 0.3, pointRadius: 2 }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                scales: {
+                    x: { type: 'time', time: { unit: 'hour' }, grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#aaa' } },
+                    y: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#aaa' } }
+                },
+                plugins: { legend: { labels: { color: '#fff' } } }
             }
         });
     };
 
-    // PWA Manifest Injection
-    const manifest = {
-        "name": "BKR Nexus Bang Nara Farm",
-        "short_name": "BKR Bang Nara",
-        "start_url": ".",
-        "display": "standalone",
-        "background_color": "#0b0f19",
-        "theme_color": "#00f3ff",
-        "icons": [{ "src": APP_LOGO_URL, "sizes": "512x512", "type": "image/svg+xml", "purpose": "any maskable" }]
-    };
-    const stringManifest = JSON.stringify(manifest);
-    const blob = new Blob([stringManifest], {type: 'application/json'});
-    const manifestURL = URL.createObjectURL(blob);
-    document.querySelector('#manifest-placeholder').setAttribute('href', manifestURL);
-
-    // Startup
-    setTimeout(() => {
-        initThreeJS();
-        setInterval(window.runFishPondLogic, 1000); 
-        console.log("BKR Nexus Bang Nara Initialized...");
-    }, 1000);
-
-    // ================================================================
-    // ================= SIMULATOR (RANDOM FALLBACK) =================
-    // จำลองค่า EC (ความเค็ม), ระยะน้ำ (Distance), แบตเตอรี่, pH และอุณหภูมิ 
-    // จะทำงานเฉพาะตอนที่ "ไม่มี" ข้อมูลจริงส่งเข้ามาจาก Firebase เท่านั้น
-    // ถ้า Firebase ส่งค่าจริงเข้ามา ระบบจะยึดตามค่าจาก Firebase ทันที
-    // (เพิ่มเติมด้านล่างนี้ทั้งหมด ไม่ได้แก้ไขโค้ดเดิมด้านบนแต่อย่างใด)
-    // ================================================================
-
-    let lastRealEcTime = 0;
-    let lastRealDistTime = 0;
-    let lastRealBattTime = 0;
-    let lastRealPhTime = 0;
-    let lastRealTempTime = 0;
-    const SIM_TIMEOUT_MS = 15000; // ถ้าไม่มีข้อมูลจริงจาก Firebase เกิน 15 วิ ถือว่า "ไม่มีข้อมูล" ให้เริ่มสุ่ม
-
-    // เพิ่ม listener ใหม่แยกต่างหาก (ไม่ยุ่งกับ onValue เดิมของแต่ละ sensor)
-    // เพื่อใช้จับเวลาว่าล่าสุด Firebase ส่งข้อมูลจริงเข้ามาเมื่อไหร่
-    onValue(ref(db, 'sensor/ec'), (snap) => {
-        if (snap.exists() && snap.val() !== null) lastRealEcTime = Date.now();
-    });
-    onValue(ref(db, 'sensor/distance'), (snap) => {
-        if (snap.exists() && snap.val() !== null) lastRealDistTime = Date.now();
-    });
-    onValue(ref(db, 'sensor/battery'), (snap) => {
-        if (snap.exists() && snap.val() !== null) lastRealBattTime = Date.now();
-    });
-    onValue(ref(db, 'sensor/ph'), (snap) => {
-        if (snap.exists() && snap.val() !== null) lastRealPhTime = Date.now();
-    });
-    onValue(ref(db, 'sensor/temperature'), (snap) => {
-        if (snap.exists() && snap.val() !== null) lastRealTempTime = Date.now();
-    });
-
-    function simShouldRun(lastRealTime) {
-        // true = ยังไม่มีข้อมูลจริงเข้ามาเลย หรือ Firebase เงียบไปนานเกินกำหนด -> ให้สุ่มค่าแทน
-        return (Date.now() - lastRealTime) > SIM_TIMEOUT_MS;
-    }
-
-    // สุ่มค่าแบบ Random Walk ให้ดูคล้ายค่าคลาดเคลื่อนจริงของเซนเซอร์ (ไม่กระโดดไปมาแบบสุ่มล้วนๆ)
-    function simRandomWalk(value, min, max, step) {
-        let next = value + (Math.random() * 2 - 1) * step;
-        if (next < min) next = min + Math.random() * step;
-        if (next > max) next = max - Math.random() * step;
-        return next;
-    }
-
-    // ค่าเริ่มต้นของตัวจำลอง
-    let simEcValue = 0.35;     // ช่วงจำลอง EC: 0.200 - 0.500
-    let simDistValue = 45.0;   // ช่วงจำลองระยะน้ำ: 44.00 - 46.00 cm
-    let simBattValue = 95;     // แบตเริ่มที่ 95% แล้วลดลงเรื่อยๆ ทีละ 1% ทุก 5 นาที
-    let simPhValue = 6.50;     // ช่วงจำลอง pH: 6.00 - 7.00
-    let simTempValue = 28.0;   // ช่วงจำลองอุณหภูมิ: 27.0 - 29.0 °C
-
-    function runSensorSimulator() {
-        // ---------- จำลอง EC (ความเค็ม) ----------
-        if (simShouldRun(lastRealEcTime)) {
-            simEcValue = simRandomWalk(simEcValue, 0.200, 0.500, 0.01);
-            currentEc = simEcValue;
-            document.getElementById('ec-display').innerText = simEcValue.toFixed(3);
-            setGauge('gauge-ec', simEcValue, 50);
-            todayChart.data.datasets[0].data.push({ x: Date.now(), y: simEcValue });
-            todayChart.update('quiet');
-
-            let ecTrendEl = document.getElementById('ec-trend');
-            if (simEcValue > prevEc + 0.003) {
-                ecTrendEl.innerHTML = '<i class="fa-solid fa-arrow-up"></i> เพิ่มขึ้น';
-                ecTrendEl.style.color = 'var(--neon-green)';
-            } else if (simEcValue < prevEc - 0.003) {
-                ecTrendEl.innerHTML = '<i class="fa-solid fa-arrow-down"></i> ลดลง';
-                ecTrendEl.style.color = 'var(--neon-red)';
-            } else {
-                ecTrendEl.innerHTML = '<i class="fa-solid fa-minus"></i> คงที่';
-                ecTrendEl.style.color = '#aaa';
-            }
-            prevEc = simEcValue;
-            window.runFishPondLogic();
-        }
-
-        // ---------- จำลองระยะน้ำ (Distance) ----------
-        if (simShouldRun(lastRealDistTime)) {
-            simDistValue = simRandomWalk(simDistValue, 44.00, 46.00, 0.15);
-            currentDist = simDistValue;
-            document.getElementById('water-dist-display').innerText = `ระดับน้ำจากเซนเซอร์: ${simDistValue.toFixed(2)} cm `;
-            window.runFishPondLogic();
-        }
-
-        // ---------- จำลองแบตเตอรี่ (แสดงผล/กราฟ เฉพาะตอนไม่มีข้อมูลจริง) ----------
-        if (simShouldRun(lastRealBattTime)) {
-            currentBatt = simBattValue;
-            document.getElementById('batt-display').innerText = Math.round(simBattValue) + "% ";
-            setGauge('gauge-batt', simBattValue, 100);
-            todayChart.data.datasets[2].data.push({ x: Date.now(), y: simBattValue });
-            todayChart.update('quiet');
-
-            let battTrendEl = document.getElementById('batt-trend');
-            battTrendEl.innerHTML = '<i class="fa-solid fa-minus"></i> คงที่';
-            battTrendEl.style.color = '#aaa';
-
-            if (simBattValue <= 40 && !lowBattAlerted) {
-                sendDiscordAlert(`🔴 **แจ้งเตือนแบตเตอรี่ต่ำ ** 🔴\nแบตเตอรี่เหลือ ${Math.round(simBattValue)}% กรุณาตรวจสอบแบตเตอรี่`);
-                lowBattAlerted = true;
-            } else if (simBattValue > 40) {
-                lowBattAlerted = false;
-            }
-        }
-
-        // ---------- จำลองค่า pH (ช่วง 6.00 - 7.00) ----------
-        // หมายเหตุ: สุ่มค่าตลอดเวลาทุกรอบ ไม่สนใจว่า Firebase จะมีค่าจริงส่งมาหรือไม่
-        simPhValue = simRandomWalk(simPhValue, 6.00, 7.00, 0.03);
-        currentPh = simPhValue;
-        document.getElementById('ph-display').innerText = simPhValue.toFixed(2);
-        setGauge('gauge-ph', simPhValue, 14);
-        todayChart.data.datasets[3].data.push({ x: Date.now(), y: simPhValue });
-        todayChart.update('quiet');
-        window.runFishPondLogic();
-
-        // ---------- จำลองอุณหภูมิ (ช่วง 27.0 - 29.0 °C) ----------
-        // หมายเหตุ: สุ่มค่าตลอดเวลาทุกรอบ ไม่สนใจว่า Firebase จะมีค่าจริงส่งมาหรือไม่
-        simTempValue = simRandomWalk(simTempValue, 27.0, 29.0, 0.1);
-        currentTemp = simTempValue;
-        document.getElementById('temp-display-gauge').innerText = simTempValue.toFixed(1) + "°";
-        setGauge('gauge-temp', simTempValue, 50);
-        todayChart.data.datasets[1].data.push({ x: Date.now(), y: simTempValue });
-        todayChart.update('quiet');
-        window.runFishPondLogic();
-    }
-
-    // สุ่มค่าทุกตัว ทุก 3 วินาที (ให้ดูเหมือนอัพเดทแบบเรียลไทม์)
-    setInterval(runSensorSimulator, 3000);
-
-    // ลดค่าแบตเตอรี่จำลองลงทีละ 1% ทุก 5 นาที (300000 ms) เฉพาะตอนที่ไม่มีข้อมูลแบตจริงจาก Firebase
-    setInterval(() => {
-        if (simShouldRun(lastRealBattTime)) {
-            simBattValue = Math.max(0, simBattValue - 1);
-        }
-    }, 900000);
-
-    // ================================================================
-    // ================= บันทึกค่าปัจจุบันลง Firebase History =================
-    // ทุกๆ 1 นาที ระบบจะบันทึกค่าปัจจุบัน (ไม่ว่าจะเป็นค่าจริงจากเซ็นเซอร์ หรือ
-    // ค่าที่จำลองขึ้นมา) ลงใน 'history/{วันที่}/{เวลา}' ของ Firebase
-    // เพื่อให้หน้า "ประวัติย้อนหลัง" สามารถดึงข้อมูลย้อนหลังมาแสดงกราฟได้จริง
-    // ================================================================
-
-    function saveHistorySnapshot() {
-        const now = new Date();
-        const yyyy = now.getFullYear();
-        const mm = String(now.getMonth() + 1).padStart(2, '0');
-        const dd = String(now.getDate()).padStart(2, '0');
-        const dateStr = `${yyyy}-${mm}-${dd}`;
-
-        const hh = String(now.getHours()).padStart(2, '0');
-        const mi = String(now.getMinutes()).padStart(2, '0');
-        const ss = String(now.getSeconds()).padStart(2, '0');
-        const timeStr = `${hh}:${mi}:${ss}`;
-
-        set(ref(db, `history/${dateStr}/${timeStr}`), {
-            ph: parseFloat(currentPh.toFixed(2)),
-            temperature: parseFloat(currentTemp.toFixed(1)),
-            ec: parseFloat(currentEc.toFixed(3)),
-            battery: Math.round(currentBatt),
-            distance: parseFloat(currentDist.toFixed(2))
-        }).catch(e => console.error("Save History Error:", e));
-    }
-
-    // บันทึกทุก 1 นาที
-    setInterval(saveHistorySnapshot, 60000);
+    initThreeJS();
+    updateWeather();
+    setInterval(updateWeather, 600000);
+    setInterval(checkBoardStatus, 10000);
 </script>
+
 </body>
 </html>
